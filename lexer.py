@@ -126,10 +126,11 @@ class Lexer:
             print('tabela simbolos,', self.tabelaSimbolos)
             print('lista tokens: ', self.listaTokens)
 
+    #caso de nao haver o estado chamado, só para a fase de testes
     def padrao(self):
         print('estado {self.estadoAtual} nao encontrado')
         
-    #Estado inicial do autômato
+    #INICIAL q0
     def estado_0(self):
         print('entra estado 0')
         expressaoLetrasEstado0 = r"a|g|h|j|k|l|m|q|u|w|x|y|z|ç|_|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|V|W|X|Y|Z|Ç"
@@ -149,7 +150,8 @@ class Lexer:
             pass
         # c de `continua`
         elif self.caracterAtual == 'c':
-            pass
+            self.estadoAtual = 26
+            self.lexema += self.caracterAtual
         # d de `de`
         elif self.caracterAtual == 'd':
             pass
@@ -165,7 +167,8 @@ class Lexer:
             pass
         # n de `nulo` ou 'nao'
         elif self.caracterAtual == 'n':
-            pass
+            self.estadoAtual = 13
+            self.lexema += self.caracterAtual
         # s de `se`, `senao` ou `senaose`
         elif self.caracterAtual == 's':
             pass
@@ -183,7 +186,8 @@ class Lexer:
             pass
         # v de `verdade`
         elif self.caracterAtual == 'v':
-            pass
+            self.estadoAtual = 18
+            self.lexema += self.caracterAtual
         # Operador aritmético '+' ou  de atribuição '+='
         elif self.caracterAtual == '+':
             pass
@@ -248,13 +252,14 @@ class Lexer:
         elif self.caracterAtual == '\n':
             pass
         
-    #FUNCAO | FALSO - (q0 --> q1 --> q2 | q3 | q93 | q94)
+    #FUNCAO | FALSO - (q0 --> q1 --> q2 | q8 | q93 | q94)
     def estado_1(self):
+        print('entra estado 1')
         if self.caracterAtual == 'u':
             self.estadoAtual = 2
             self.lexema += self.caracterAtual
         elif self.caracterAtual == 'a':
-            self.estadoAtual = 3
+            self.estadoAtual = 8
             self.lexema += self.caracterAtual
         elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
             self.estadoAtual = 93
@@ -263,129 +268,376 @@ class Lexer:
             self.estadoAtual = 94
             self.estado_94()
       
-    #!!!!!!!!NAO FEITO
+    #FUNCAO - (q1 --> q2 --> q3 | q93 | q94)
     def estado_2(self):
         print('entra estado 2')
+        if self.caracterAtual == 'n':
+            self.estadoAtual = 3
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
         
-    #!!!!!!!!NAO FEITO
+    #FUNCAO - (q2 --> q3 --> q4 | q93 | q94)
     def estado_3(self):
         print('entra estado 3')
+        if self.caracterAtual == 'c':
+            self.estadoAtual = 4
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #FUNCAO - (q3 --> q4 --> q5 | q93 | q94)
     def estado_4(self):
         print('entra estado 4')
+        if self.caracterAtual == 'a':
+            self.estadoAtual = 5
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #FUNCAO - (q4 --> q5 --> q6 | q93 | q94)
     def estado_5(self):
         print('entra estado 5')
+        if self.caracterAtual == 'o':
+            self.estadoAtual = 6
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #FUNCAO - (q5 --> q6 --> q7 | q93)
     def estado_6(self):
         print('entra estado 6')
+        if re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 7
+            self.estado_7()
 
-    #!!!!!!!!NAO FEITO
+    #FUNCAO FINAL- (q6 --> q7 --> q0) 
     def estado_7(self):
         print('entra estado 7')
+        self.listaTokens.append('FUNCAO')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador-=1
 
-    #!!!!!!!!NAO FEITO
+    #FALSO - (q1 --> q8 --> q9 | q93 | q94)
     def estado_8(self):
         print('entra estado 8')
+        if self.caracterAtual == 'l':
+            self.estadoAtual = 9
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #FALSO - (q8 --> q9 --> q10 | q93 | q94)
     def estado_9(self):
         print('entra estado 9')
+        if self.caracterAtual == 's':
+            self.estadoAtual = 10
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #FALSO - (q9 --> q10 --> q11 | q93 | q94)
     def estado_10(self):
         print('entra estado 10')
+        if self.caracterAtual == 'o':
+            self.estadoAtual = 11
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #FALSO - (q10 --> q11 --> q12 | q93)
     def estado_11(self):
         print('entra estado 11')
+        if re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 12
+            self.estado_12()
 
-    #!!!!!!!!NAO FEITO
+    #FALSO FINAL- (q10 --> q11 --> q12 | q93) 
     def estado_12(self):
         print('entra estado 12')
+        self.listaTokens.append('FALSO')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador-=1
 
-    #!!!!!!!!NAO FEITO
+    #NULO - (q0 --> q13 --> q14 | q93 | q94)
     def estado_13(self):
         print('entra estado 13')
+        if self.caracterAtual == 'u':
+            self.estadoAtual = 14
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #NULO - (q13 --> q14 --> q15 | q93 | q94)
     def estado_14(self):
         print('entra estado 14')
+        if self.caracterAtual == 'l':
+            self.estadoAtual = 15
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #NULO - (q14 --> q15 --> q16 | q93 | q94)
     def estado_15(self):
         print('entra estado 15')
+        if self.caracterAtual == 'o':
+            self.estadoAtual = 16
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #NULO - (q15 --> q16 --> q17 | q93)
     def estado_16(self):
         print('entra estado 16')
+        if re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 17
+            self.estado_17()
 
-    #!!!!!!!!NAO FEITO
+    #NULO FINAL- (q16 --> q17 --> q0)
     def estado_17(self):
         print('entra estado 17')
+        self.listaTokens.append('NULO')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -=1
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q0 --> q18 --> q19 | q93 | q94)
     def estado_18(self):
         print('entra estado 18')
+        if self.caracterAtual == 'e':
+            self.estadoAtual = 19
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q18 --> q19 --> q20 | q93 | q94)
     def estado_19(self):
         print('entra estado 19')
+        if self.caracterAtual == 'r':
+            self.estadoAtual = 20
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q19 --> q20 --> q21 | q93 | q94)
     def estado_20(self):
         print('entra estado 20')
+        if self.caracterAtual == 'd':
+            self.estadoAtual = 21
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q20 --> q21 --> q22 | q93 | q94)
     def estado_21(self):
         print('entra estado 21')
+        if self.caracterAtual == 'a':
+            self.estadoAtual = 22
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q21 --> q22 --> q23 | q93 | q94)
     def estado_22(self):
         print('entra estado 22')
+        if self.caracterAtual == 'd':
+            self.estadoAtual = 23
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q22 --> q23 --> q24 | q93 | q94)
     def estado_23(self):
         print('entra estado 23')
+        if self.caracterAtual == 'e':
+            self.estadoAtual = 24
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE - (q23 --> q24 --> q25 | q93)
     def estado_24(self):
         print('entra estado 24')
+        if re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 25
+            self.estado_25()
 
-    #!!!!!!!!NAO FEITO
+    #VERDADE FINAL - (q24 --> q25 --> q0)
     def estado_25(self):
         print('entra estado 25')
+        self.listaTokens.append('VERDADE')
 
-    #!!!!!!!!NAO FEITO
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -=1
+
+    #CLASSE | CONTINUA - (q0 --> q26 --> q27 | q33 | q93 | q94)
     def estado_26(self):
         print('entra estado 26')
+        if self.caracterAtual == 'l':
+            self.estadoAtual = 27
+            self.lexema += self.caracterAtual
+        elif self.caracterAtual == 'o':
+            self.estadoAtual = 33
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #CLASSE - (q26 --> q27 --> q28 | q93 | q94)
     def estado_27(self):
         print('entra estado 27')
+        if self.caracterAtual == 'a':
+            self.estadoAtual = 28
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #CLASSE - (q27 --> q28 --> q29 | q93 | q94)
     def estado_28(self):
         print('entra estado 28')
+        if self.caracterAtual == 's':
+            self.estadoAtual = 29
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #CLASSE - (q28 --> q29 --> q30 | q93 | q94)
     def estado_29(self):
         print('entra estado 29')
+        if self.caracterAtual == 's':
+            self.estadoAtual = 30
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #CLASSE - (q29 --> q30 --> q31 | q93 | q94)
     def estado_30(self):
         print('entra estado 30')
+        if self.caracterAtual == 'e':
+            self.estadoAtual = 31
+            self.lexema += self.caracterAtual
+        elif re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 94
+            self.estado_94()
 
-    #!!!!!!!!NAO FEITO
+    #CLASSE - (q30 --> q31 --> q32 | q93)
     def estado_31(self):
         print('entra estado 31')
+        if re.match(self.expressaoLetrasAndDigitosAndUnderline, self.caracterAtual):
+            self.estadoAtual = 93
+            self.lexema += self.caracterAtual
+        else:
+            self.estadoAtual = 32
+            self.estado_32()
 
-    #!!!!!!!!NAO FEITO
+    #CLASSE FINAL - (q31 --> q32 --> q0)
     def estado_32(self):
         print('entra estado 32')
+        self.listaTokens.append('CLASSE')
+
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
 
     #!!!!!!!!NAO FEITO
     def estado_33(self):

@@ -16,7 +16,9 @@ class Lexer:
 
     def getToken(self):
         while(self.contador < len(self.trechoCodigo) and self.variavelControle):
+            print('estado antes de chamar o sicht: ' , self.estadoAtual)
             self.caracterAtual = self.trechoCodigo[self.contador]
+            print('caracter antes de chamar o swich case: ', self.caracterAtual)
             switch_case = {
                 0: self.estado_0,
                 1: self.estado_1,
@@ -125,6 +127,39 @@ class Lexer:
                 104: self.estado_104,
                 105: self.estado_105,
                 106: self.estado_106,
+                107: self.estado_107,
+                108: self.estado_108,
+                109: self.estado_109,
+                110: self.estado_110,
+                111: self.estado_111,
+                112: self.estado_112,
+                113: self.estado_113,
+                114: self.estado_114,
+                115: self.estado_115,
+                116: self.estado_116,
+                117: self.estado_117,
+                118: self.estado_118,
+                119: self.estado_119,
+                120: self.estado_120,
+                121: self.estado_121,
+                122: self.estado_122,
+                123: self.estado_123,
+                124: self.estado_124,
+                125: self.estado_125,
+                126: self.estado_126,
+                127: self.estado_127,
+                128: self.estado_128,
+                129: self.estado_129,
+                130: self.estado_130,
+                131: self.estado_131,
+                132: self.estado_132,
+                133: self.estado_133,
+                134: self.estado_134,
+                135: self.estado_135,
+                136: self.estado_136,
+                137: self.estado_137,
+                138: self.estado_138,
+                139: self.estado_139,
             }
             switch_case.get(self.estadoAtual, self.padrao)()
             self.contador+=1
@@ -200,67 +235,88 @@ class Lexer:
             self.lexema += self.caracterAtual
         # Operador aritmético '+' ou  de atribuição '+='
         elif self.caracterAtual == '+':
-            pass
+            self.estadoAtual = 107
+            self.lexema += self.caracterAtual
         # Operador aritmético '-' ou atribuição '-='
         elif self.caracterAtual == '-':
-            pass
+            self.estadoAtual = 110
+            self.lexema += self.caracterAtual
         # Operador aritmético *
         elif self.caracterAtual == '*':
-            pass
+            self.estadoAtual = 113
+            self.estado_113()
         # Operador aritmético /
         elif self.caracterAtual == '/':
-            pass
+            self.estadoAtual = 114
+            self.estado_114()
         # Operador de atribuição '=' ou comparação '=='
         elif self.caracterAtual == '=':
-            pass
+            self.estadoAtual = 115
+            self.lexema = self.caracterAtual
         # Operador de comparação '!='
         elif self.caracterAtual == '!':
-            pass
+            self.estadoAtual = 118
+            self.lexema = self.caracterAtual
         # Operador de comparação '>' ou '>='
         elif self.caracterAtual == '>':
-            pass
+            self.estadoAtual = 121
+            self.lexema = self.caracterAtual
         # Operador de comparação '<' ou '<='
         elif self.caracterAtual == '<':
-            pass
+            self.estadoAtual = 124
+            self.lexema = self.caracterAtual
         # abre parenteses
         elif self.caracterAtual == '(':
-            pass
+            self.estadoAtual = 127
+            self.estado_127()
         # fecha parenteses
         elif self.caracterAtual == ')':
-            pass
+            self.estadoAtual = 128
+            self.estado_128()
         # abre colchetes
         elif self.caracterAtual == '[':
-            pass
+            self.estadoAtual = 129
+            self.estado_129()
         # fecha colchetes
         elif self.caracterAtual == ']':
-            pass
+            self.estadoAtual = 130
+            self.estado_130()
         # abre chaves
         elif self.caracterAtual == '{':
-            pass
+            self.estadoAtual = 131
+            self.estado_131()
         # fecha chaves
         elif self.caracterAtual == '}':
-            pass
+            self.estadoAtual = 132
+            self.estado_132()
         # dois pontos para fim de funções
         elif self.caracterAtual == ':':
-            pass
+            self.estadoAtual = 133
+            self.estado_133()
         # virgula para divisor de atributos
         elif self.caracterAtual == ',':
-            pass
+            self.estadoAtual = 134
+            self.estado_134()
         # hashtag para comentarios
         elif self.caracterAtual == '#':
-            pass
+            self.estadoAtual = 135
+            self.estado_135()
         # aspas simples para abrir e fechar textos
-        elif self.caracterAtual == " ' ":
-            pass
+        elif self.caracterAtual == '\'':
+            self.estadoAtual = 136
+            self.estado_136()
         # espaço para finalizar os lexemas
         elif self.caracterAtual == ' ':
-            pass
+            self.estadoAtual = 137
+            self.estado_137()
         # tabulação para organizar as hierarquias
         elif self.caracterAtual == '\t':
-            pass
+            self.estadoAtual = 138
+            self.estado_138()
         # quebra de linha para organizar as linhas
         elif self.caracterAtual == '\n':
-            pass
+            self.estadoAtual = 139
+            self.estado_139()
         
     #FUNCAO | FALSO - (q0 --> q1 --> q2 | q8 | q98 | q99)
     def estado_1(self):
@@ -1513,7 +1569,282 @@ class Lexer:
         self.lexema = ''
         self.estadoAtual = 0
         self.contador-=1
-            
+
+    #+ | +=    (q0 --> q107 --> q108 | q109)
+    def estado_107(self):
+        print('entra no estado 107')
+        if(self.caracterAtual == '='):
+            self.estadoAtual = 109
+            self.lexema += self.caracterAtual
+            self.estado_109()
+        else:
+            self.estadoAtual = 108
+            self.estado_108()
+
+    #+ FINAL - (q107 --> q108 --> q0)
+    def estado_108(self):
+        print('entra no estado 108')
+        self.listaTokens.append('+')
+
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
+
+    #+= FINAL - (q0 --> 107 --> 108 | 109)
+    def estado_109(self):
+        print('entra no estado 109')
+        self.listaTokens.append('+=')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+
+    #- | -=    (q0 --> q110 --> q111 | q112)
+    def estado_110(self):
+        print('entra no estado 110')
+        if(self.caracterAtual == '='):
+            self.estadoAtual = 112
+            self.lexema += self.caracterAtual
+            self.estado_112()
+        else:
+            self.estadoAtual = 111
+            self.estado_111()
+
+    #- FINAL - (q110 --> q111 --> q0)
+    def estado_111(self):
+        print('entra no estado 111')
+        self.listaTokens.append('-')
+
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
+
+    #-= FINAL - (q110 --> q112 --> q0)
+    def estado_112(self):
+        print('entra no estado 112')
+        self.listaTokens.append('-=')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+
+    #* FINAL - (q0 --> q113 --> q0)
+    def estado_113(self):
+        print('entra no estado 113')
+        self.listaTokens.append('*')
+        
+        self.estadoAtual = 0
+        
+    #/ FINAL - (q0 --> q114 --> q0)
+    def estado_114(self):
+        print('entra no estado 114')
+        self.listaTokens.append('/')
+        
+        self.estadoAtual = 0
+
+    #= | ==   (q0 --> q115 --> q116 | q117)
+    def estado_115(self):
+        print('entra no estado 115')
+        if(self.caracterAtual == '='):
+            self.estadoAtual = 117
+            self.lexema += self.caracterAtual
+            self.estado_117()
+        else:
+            self.estadoAtual = 116
+            self.estado_116()
+
+    #= FINAL - (q115 --> q116 --> q0)
+    def estado_116(self):
+        print('entra no estado 116')
+        self.listaTokens.append('=')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
+        
+    #== FINAL - (q115 --> q117 --> q0)
+    def estado_117(self):
+        print('entra no estado 117')
+        self.listaTokens.append('==')
+        
+        self.lexema = ''
+        self.estadoAtual = 0 
+
+    #! | !=  -  (q0 --> q118 --> q119 | q120)
+    def estado_118(self):
+        print('entra no estado 118')
+        if(self.caracterAtual == '='):
+            self.estadoAtual = 120
+            self.lexema += self.caracterAtual
+            self.estado_120()
+        else:
+            self.estadoAtual = 119
+            self.estado_119()
+
+        #= FINAL - (q115 --> q116 --> q0)
+    
+    #! FINAL - (q118 --> q119 --> q0)
+    def estado_119(self):
+        print('entra no estado 119')
+        self.listaTokens.append('!')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
+        
+    #!= FINAL - (q118 --> q120 --> q0)
+    def estado_120(self):
+        print('entra no estado 120')
+        self.listaTokens.append('!=')
+        
+        self.lexema = ''
+        self.estadoAtual = 0 
+
+    #> | >=  -  (q0 --> q121 --> q122 | q123)
+    def estado_121(self):
+        print('entra no estado 121')
+        if(self.caracterAtual == '='):
+            self.estadoAtual = 123
+            self.lexema += self.caracterAtual
+            self.estado_123()
+        else:
+            self.estadoAtual = 122
+            self.estado_122()
+
+    #> FINAL - (q121 --> q122 --> q0)
+    def estado_122(self):
+        print('entra no estado 122')
+        self.listaTokens.append('>')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
+
+    #>= FINAL - (q121 --> q123 --> q0)
+    def estado_123(self):
+        print('entra no estado 123')
+        self.listaTokens.append('>=')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+
+    #< | <=  -  (q0 --> q124 --> q125 | q126)
+    def estado_124(self):
+        print('entra no estado 124')
+        if(self.caracterAtual == '='):
+            self.estadoAtual = 126
+            self.lexema += self.caracterAtual
+            self.estado_126()
+        else:
+            self.estadoAtual = 125
+            self.estado_125()
+
+    #< FINAL - (q124 --> q125 --> q0)
+    def estado_125(self):
+        print('entra no estado 125')
+        self.listaTokens.append('<')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+        self.contador -= 1
+
+    #<= FINAL - (q124 --> q126 --> q0)
+    def estado_126(self):
+        print('entra no estado 126')
+        self.listaTokens.append('<=')
+        
+        self.lexema = ''
+        self.estadoAtual = 0
+
+    #( FINAL  -  (q0 --> q127 --> q0)
+    def estado_127(self):
+        print('entra no estado 127')
+        self.listaTokens.append('(')
+
+        self.estadoAtual = 0
+
+    #) FINAL  -  (q0 --> q128 --> q0)
+    def estado_128(self):
+        print('entra no estado 128')
+        self.listaTokens.append(')')
+
+        self.estadoAtual = 0
+
+    #[ FINAL  -  (q0 --> q129 --> q0)
+    def estado_129(self):
+        print('entra no estado 129')
+        self.listaTokens.append('[')
+
+        self.estadoAtual = 0
+
+    #] FINAL  -  (q0 --> q130 --> q0)
+    def estado_130(self):
+        print('entra no estado 130')
+        self.listaTokens.append(']')
+
+        self.estadoAtual = 0
+
+    #{ FINAL  -  (q0 --> q131 --> q0)
+    def estado_131(self):
+        print('entra no estado 131')
+        self.listaTokens.append('{')
+
+        self.estadoAtual = 0
+
+    #} FINAL  -  (q0 --> q132 --> q0)
+    def estado_132(self):
+        print('entra no estado 132')
+        self.listaTokens.append('}')
+
+        self.estadoAtual = 0
+
+    #: FINAL  -  (q0 --> q133 --> q0)
+    def estado_133(self):
+        print('entra no estado 133')
+        self.listaTokens.append(':')
+
+        self.estadoAtual = 0
+
+    #, FINAL  -  (q0 --> q134 --> q0)
+    def estado_134(self):
+        print('entra no estado 134')
+        self.listaTokens.append(',')
+
+        self.estadoAtual = 0
+
+    ## FINAL  -  (q0 --> q135 --> q0)
+    def estado_135(self):
+        print('entra no estado 135')
+        self.listaTokens.append('#')
+
+        self.estadoAtual = 0
+
+    #' FINAL  -  (q0 --> q136 --> q0)
+    def estado_136(self):
+        print('entra no estado 136')
+        self.listaTokens.append('ASPAS')
+
+        self.estadoAtual = 0
+
+    #ESPACO FINAL  -  (q0 --> q137 --> q0)
+    def estado_137(self):
+        print('entra no estado 137')
+        self.listaTokens.append('ESPACO')
+
+        self.estadoAtual = 0
+
+    #\t FINAL  -  (q0 --> q138 --> q0)
+    def estado_138(self):
+        print('entra no estado 138')
+        self.listaTokens.append('TAB')
+
+        self.estadoAtual = 0
+
+    #\n FINAL  -  (q0 --> q139 --> q0)
+    def estado_139(self):
+        print('entra no estado 139')
+        self.listaTokens.append('ENTER')
+
+        self.estadoAtual = 0
+
 
 codigo = input('Digite o codigo: ')
 l = Lexer(codigo)

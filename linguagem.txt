@@ -1,31 +1,57 @@
-S           -->     FUNCAO PRINCIPAL
+golbal.tab = 0
 
-PRINCIPAL   -->     {PRINCIPAL.context=main, PRINCIPAL.tab = 0} BLOCO
+PROGRAMA            -->     FUNÇÃOPRIMEIRA BLOCO
 
-FUNCAO      -->     funcao id ( PARAMETRO ) : enter BLOCO   |   E {global.context = main}
+FUNÇÃOPRIMEIRA      -->     funcao id ( PARAMETRO ) : enter {global.tab += 1} BLOCOOBRIGATORIO  |   E 
 
-PARAMETRO   -->     id PARAMETRO2   |   E
+PARAMETRO           -->     id PARAMETRO2   |   E
 
-PARAMETRO2  -->     , id PARAMETRO2 |   E
+PARAMETRO2          -->     , id PARAMETRO2 |   E
 
-BLOCO       -->     {empilha na pilha tabulação, 'global.tab' vezes} INSTRUÇÕES INSTRUÇÕES2      
+BLOCO               -->     {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES  |   E
 
-INSTRUÇÕES  -->     CONDICIONAL
-            |       LOOPS
-            |       LEITURA
-            |       ESCRITA
-            |       FUNCAO
-            |       ATRIBUICAO
-            |       RETORNO
-            |       EXPRESSÃO
+BLOCOOBRIGATORIO    -->     {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES    
+   
+INSTRUÇÕES          -->      enter INSTRUÇÃO LISTAINSTRUÇÕES
 
-INSTRUÇÕES2 -->     enter INSTRUÇÕES
+INSTRUÇÃO           -->     CONDICIONAL
+                    |       LEITURA
+                    |       ESCRITA
+                    |       FUNÇÃO
+                    |       ATRIBUICAO
+                    |       LOOPS
+                    |       RETORNO
+                    |       EXPRESSÃO
 
-CONDICIONAL -->     se FORMA : {golbal.tab += 1} BLOCO SENAO
+LISTAINSTRUÇÕES     -->     enter INSTRUÇÃO LISTAINSTRUÇÕES  |   E {global.tab -= 1}
 
-SENAO       -->     senao : BLOCO   |   E {global.tab -= 1}
+CONDICIONAL         -->     se FORMA : {golbal.tab += 1} BLOCOOBRIGATORIO SENAO
 
-FORMA       -->     espaco EXPRESSÃO  | (EXPRESSÃO)
+FORMA               -->     espaco EXPRESSÃO  | (EXPRESSÃO)
+
+SENAO               -->     senao : BLOCOOBRIGATORIO   |   E {global.tab -= 1}
+
+LEITURA             -->     ler ( TERMOLEITURA NOVOTERMOLEITURA )
+
+TERMOLEITURA        -->     id DIMENSAO
+
+NOVOTERMOLEITURA    -->     , TERMOLEITURA NOVOTERMOLEITURA | ε
+
+DIMENSAO            -->     [ EXPR_ADITIVA ] DIMENSAO | ε
+
+ESCRITA             -->     escreve ( TERMOESCRITA NOVOTERMOESCRITA ) 
+
+TERMOESCRITA        -->     id DIMENSAO | CONSTANTE | texto
+
+NOVOTERMOESCRITA    -->     , TERMOESCRITA NOVOTERMOESCRITA | ε
+
+ATRIBUIÇÃO          -->     id = COMPLEMENTO 
+
+COMPLEMENTO         -->     EXPRESSÃO | FUNÇÃO
+
+FUNÇÃO              -->     funcao id ( PARAMETRO ) : enter {global.tab += 1} BLOCOOBRIGATORIO BLOCO
+
+//PAREI AQUI EM FUNÇÃO ---------------------------------------------------------------------------------------------------------------------------------------
 
 EXPRESSÃO           -->     EXPR_OU
 

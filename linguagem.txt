@@ -1,0 +1,76 @@
+S           -->     FUNCAO PRINCIPAL
+
+PRINCIPAL   -->     {PRINCIPAL.context=main, PRINCIPAL.tab = 0} BLOCO
+
+FUNCAO      -->     funcao id ( PARAMETRO ) : enter BLOCO   |   E {global.context = main}
+
+PARAMETRO   -->     id PARAMETRO2   |   E
+
+PARAMETRO2  -->     , id PARAMETRO2 |   E
+
+BLOCO       -->     {empilha na pilha tabulação, 'global.tab' vezes} INSTRUÇÕES INSTRUÇÕES2      
+
+INSTRUÇÕES  -->     CONDICIONAL
+            |       LOOPS
+            |       LEITURA
+            |       ESCRITA
+            |       FUNCAO
+            |       ATRIBUICAO
+            |       RETORNO
+            |       EXPRESSÃO
+
+INSTRUÇÕES2 -->     enter INSTRUÇÕES
+
+CONDICIONAL -->     se FORMA : {golbal.tab += 1} BLOCO SENAO
+
+SENAO       -->     senao : BLOCO   |   E {global.tab -= 1}
+
+FORMA       -->     espaco EXPRESSÃO  | (EXPRESSÃO)
+
+EXPRESSÃO           -->     EXPR_OU
+
+EXPR_OU             -->     EXPR_E EXPR_OU2
+
+EXPR_OU2            -->     || EXPR_E EXPR_OU2 | ε
+
+EXPR_E              -->     EXPR_RELACIONAL EXPR_E2
+
+EXPR_E2             -->     && EXPR_RELACIONAL EXPR_E2 | ε
+
+EXPR_RELACIONAL     -->     EXPR_ADITIVA EXPR_ RELACIONAL2
+
+EXPR_RELACIONAL2    -->     comp EXPR_ADITIVA | ε
+
+EXPR_ADITIVA        -->     EXPR_MULTIPLICATIVA EXPR_ADITIVA2
+
+EXPR_ADITIVA2       -->     OP_ADITIVO EXPR_MULTIPLICATIVA EXPR_ADITIVA2 | ε
+
+OP_ADITIVO          -->     + | -
+
+EXPR_MULTIPLICATIVA -->     FATOR EXPR_MULTIPLICATIVA2
+
+EXPR_MULTIPLICATIVA2-->     OP_MULTIPLICATIVO FATOR EXPR_MULTIPLICATIVA2 | ε
+
+OP_MULTIPLICATIVO   -->      * | / 
+
+FATOR               -->     SINAL TERMO | texto | ! FATOR | ( EXPRESSÃO )
+
+TERMO               -->     id DIMENSAO2 | CONSTANTE
+
+SINAL               -->     + | - | ε
+
+CONSTANTE           -->     num_int | num_dec
+
+
+
+
+
+
+
+
+
+
+def tal:                        {global.tab = 1}
+    se x > y:                   {global.tab = 2}
+        print(''abobora)
+def tora:                                [se nao tem senao {global.tab = 1}]

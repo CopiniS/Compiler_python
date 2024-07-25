@@ -1,5 +1,6 @@
 from lexer import Lexer;
-from collections import deque
+from collections import deque;
+import sys;
 
 class Parser:
     def __init__(self):
@@ -184,8 +185,8 @@ class Parser:
             print('ERRO INSTRUCAO: simbolo nao reconhecido')
 
 
-
-codigo = input('Digite o codigo: ')
+print('Digite o código. Para compilar digite Ctrl+Z')
+codigo = sys.stdin.read()
 x = Parser() 
 x.getListaTokenAndTabSimb(codigo)
 

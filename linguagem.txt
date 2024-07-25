@@ -20,17 +20,16 @@ INSTRUÇÃO           -->     CONDICIONAL
                     |       LEITURA
                     |       ESCRITA
                     |       FUNÇÃO
-                    |       ATRIBUICAO
-                    |       PARA
+                    |       ATRIBUIÇÃO
                     |       ENQUANTO
                     |       RETORNO
                     |       EXPRESSÃO
 
-LISTAINSTRUÇÕES     -->     INSTRUÇÃO LISTAINSTRUÇÕES  |  ε{global.tab -= 1}
+LISTAINSTRUÇÕES     -->     INSTRUÇÃO LISTAINSTRUÇÕES  |  ε {global.tab -= 1}
 
 CONDICIONAL         -->     se ( EXPRESSÃO ) : {global.tab += 1} BLOCOOBRIGATORIO SENAO BLOCO
 
-SENAO               -->     senao : BLOCOOBRIGATORIO   |  ε{global.tab -= 1}
+SENAO               -->     senao : BLOCOOBRIGATORIO   |  ε {global.tab -= 1}
 
 LEITURA             -->     ler ( TERMOLEITURA NOVOTERMOLEITURA )
 
@@ -66,7 +65,7 @@ EXPR_E              -->     EXPR_RELACIONAL EXPR_E2
 
 EXPR_E2             -->     && EXPR_RELACIONAL EXPR_E2 | ε
 
-EXPR_RELACIONAL     -->     EXPR_ADITIVA EXPR_ RELACIONAL2
+EXPR_RELACIONAL     -->     EXPR_ADITIVA EXPR_RELACIONAL2
 
 EXPR_RELACIONAL2    -->     OP_COMPARATIVO EXPR_ADITIVA | ε
 

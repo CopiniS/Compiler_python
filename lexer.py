@@ -16,9 +16,7 @@ class Lexer:
 
     def getToken(self):
         while(self.contador < len(self.trechoCodigo) and self.variavelControle):
-            print('estado antes de chamar o sicht: ' , self.estadoAtual)
             self.caracterAtual = self.trechoCodigo[self.contador]
-            print('caracter antes de chamar o swich case: ', self.caracterAtual)
             switch_case = {
                 0: self.estado_0,
                 1: self.estado_1,
@@ -163,8 +161,9 @@ class Lexer:
             }
             switch_case.get(self.estadoAtual, self.padrao)()
             self.contador+=1
-            print('tabela simbolos,', self.tabelaSimbolos)
             print('lista tokens: ', self.listaTokens)
+            print('tab simb', self.tabelaSimbolos)
+           
 
     #caso de nao haver o estado chamado, só para a fase de testes
     def padrao(self):
@@ -317,6 +316,7 @@ class Lexer:
         elif self.caracterAtual == '\n':
             self.estadoAtual = 139
             self.estado_139()
+        print('estadoAtual: ', self.estadoAtual)
         
     #FUNCAO | FALSO - (q0 --> q1 --> q2 | q8 | q98 | q99)
     def estado_1(self):
@@ -1844,8 +1844,3 @@ class Lexer:
         self.listaTokens.append('ENTER')
 
         self.estadoAtual = 0
-
-
-codigo = input('Digite o codigo: ')
-l = Lexer(codigo)
-l.getToken()

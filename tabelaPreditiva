@@ -1,18 +1,21 @@
 {
   "PROGRAMA": {
-    "funcao": "FUNÇÃOPRIMEIRA"
+    "funcao": "PROGRAMA --> INSTRUÇÕES",
+    "se": "PROGRAMA --> INSTRUÇÕES",
+    "ler": "PROGRAMA --> INSTRUÇÕES",
+    "escreve": "PROGRAMA --> INSTRUÇÕES",
+    "id": "PROGRAMA --> INSTRUÇÕES",
+    "enquanto": "PROGRAMA --> INSTRUÇÕES",
+    "retorna": "PROGRAMA --> INSTRUÇÕES",
+    "+": "PROGRAMA --> INSTRUÇÕES",
+    "-": "PROGRAMA --> INSTRUÇÕES",
+    "num_int": "PROGRAMA --> INSTRUÇÕES",
+    "num_dec": "PROGRAMA --> INSTRUÇÕES",
+    "texto": "PROGRAMA --> INSTRUÇÕES",
+    "!": "PROGRAMA --> INSTRUÇÕES",
+    "(": "PROGRAMA --> INSTRUÇÕES"
   },
-  "FUNÇÃOPRIMEIRA": {
-    "funcao": "funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO"
-  },
-  "PARAMETRO": {
-    "id": "id PARAMETRO2",
-    ")": "ε"
-  },
-  "PARAMETRO2": {
-    ",": ", id PARAMETRO2",
-    ")": "ε"
-  },
+
   "BLOCO": {
     "enter": "enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES",
     "}": "ε",
@@ -121,6 +124,16 @@
   "FUNÇÃO": {
     "funcao": "funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO BLOCO"
   },
+
+  "PARAMETRO": {
+    "id": "id PARAMETRO2",
+    ")": "ε"
+  },
+  "PARAMETRO2": {
+    ",": ", id PARAMETRO2",
+    ")": "ε"
+  },
+
   "ATRIBUIÇÃO": {
     "id": "id = COMPLEMENTO"
   },

@@ -1,12 +1,8 @@
 {
     "FIRST": {
       "PROGRAMA": ["funcao", "se", "ler", "escreve", "id","enquanto",
-       "retorna", "+", "-", "id", "num_int", "num_dec", "texto", "!", "(", "ε"],
-      "FUNÇÃOINICIAL": ["funcao", "ε"],
-      "PARAMETRO": ["id", "ε"],
-      "PARAMETRO2": [",", "ε"],
-      "BLOCOINICIAL": ["se", "ler", "escreve","funcao", "id","enquanto",
-       "retorna", "+", "-", "id", "num_int", "num_dec", "texto", "!", "(", "ε"],
+       "retorna", "+", "-", "num_int", "num_dec", "texto", "!", "(", "ε"],
+      
       "BLOCO": ["enter", "ε"],
       "BLOCOOBRIGATORIO": ["enter"],
       "INSTRUÇÕES": ["se", "ler", "escreve","funcao", "id","enquanto",
@@ -25,6 +21,8 @@
       "TERMOESCRITA": ["id", "CONSTANTE", "texto"],
       "NOVOTERMOESCRITA": [",", "ε"],
       "FUNÇÃO": ["funcao"],
+      "PARAMETRO": ["id", "ε"],
+      "PARAMETRO2": [",", "ε"],
       "ATRIBUIÇÃO": ["id"],
       "COMPLEMENTO": ["+", "-", "id", "num_int", "num_dec", "texto",
        "!", "(", "funcao"],

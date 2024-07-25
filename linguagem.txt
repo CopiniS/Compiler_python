@@ -1,20 +1,12 @@
 global.tab = 0
 
-PROGRAMA            -->     FUNÇÃOINICIAL BLOCOINICIAL
+PROGRAMA            -->     INSTRUCOES
 
-FUNÇÃOINICIAL      -->     funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO  |  ε
-
-PARAMETRO           -->     id PARAMETRO2   |  ε
-
-PARAMETRO2          -->     , id PARAMETRO2 |  ε
-
-BLOCOINICIAL        -->     INSTRUÇÕES  |  ε
-
-BLOCO               -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES  |  ε
+BLOCO               -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES  |  ε {global.tab -= 1}
 
 BLOCOOBRIGATORIO    -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES    
    
-INSTRUÇÕES          -->     INSTRUÇÃO LISTAINSTRUÇÕES
+INSTRUÇÕES          -->     INSTRUÇÃO BLOCO
 
 INSTRUÇÃO           -->     CONDICIONAL
                     |       LEITURA
@@ -25,9 +17,7 @@ INSTRUÇÃO           -->     CONDICIONAL
                     |       RETORNO
                     |       EXPRESSÃO
 
-LISTAINSTRUÇÕES     -->     INSTRUÇÃO LISTAINSTRUÇÕES  |  ε {global.tab -= 1}
-
-CONDICIONAL         -->     se ( EXPRESSÃO ) : {global.tab += 1} BLOCOOBRIGATORIO SENAO BLOCO
+CONDICIONAL         -->     se ( EXPRESSÃO ) : {global.tab += 1} BLOCOOBRIGATORIO SENAO
 
 SENAO               -->     senao : BLOCOOBRIGATORIO   |  ε {global.tab -= 1}
 
@@ -39,19 +29,23 @@ NOVOTERMOLEITURA    -->     , TERMOLEITURA NOVOTERMOLEITURA | ε
 
 DIMENSAO            -->     [ EXPR_ADITIVA ] DIMENSAO | ε
 
-ESCRITA             -->     escreve ( TERMOESCRITA NOVOTERMOESCRITA ) 
+ESCRITA             -->     escrever ( TERMOESCRITA NOVOTERMOESCRITA ) 
 
 TERMOESCRITA        -->     id DIMENSAO | CONSTANTE | texto
 
 NOVOTERMOESCRITA    -->     , TERMOESCRITA NOVOTERMOESCRITA | ε
 
-FUNÇÃO              -->     funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO BLOCO
+FUNÇÃO              -->     funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO 
+
+PARAMETRO           -->     id PARAMETRO2   |  ε
+
+PARAMETRO2          -->     , id PARAMETRO2 |  ε
 
 ATRIBUIÇÃO          -->     id = COMPLEMENTO 
 
 COMPLEMENTO         -->     EXPRESSÃO | FUNÇÃO
 
-ENQUANTO            -->     enquanto ( EXPRESSÃO ): {global.tab += 1} BLOCOOBRIGATORIO BLOCO
+ENQUANTO            -->     enquanto ( EXPRESSÃO ): {global.tab += 1} BLOCOOBRIGATORIO
 
 RETORNO             -->     retorna EXPRESSÃO
 

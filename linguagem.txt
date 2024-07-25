@@ -1,35 +1,36 @@
-golbal.tab = 0
+global.tab = 0
 
-PROGRAMA            -->     FUNÇÃOPRIMEIRA BLOCO
+PROGRAMA            -->     FUNÇÃOINICIAL BLOCOINICIAL
 
-FUNÇÃOPRIMEIRA      -->     funcao id ( PARAMETRO ) : enter {global.tab += 1} BLOCOOBRIGATORIO  |   E 
+FUNÇÃOINICIAL      -->     funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO  |  ε
 
-PARAMETRO           -->     id PARAMETRO2   |   E
+PARAMETRO           -->     id PARAMETRO2   |  ε
 
-PARAMETRO2          -->     , id PARAMETRO2 |   E
+PARAMETRO2          -->     , id PARAMETRO2 |  ε
 
-BLOCO               -->     {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES  |   E
+BLOCOINICIAL        -->     INSTRUÇÕES  |  ε
 
-BLOCOOBRIGATORIO    -->     {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES    
+BLOCO               -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES  |  ε
+
+BLOCOOBRIGATORIO    -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES    
    
-INSTRUÇÕES          -->      enter INSTRUÇÃO LISTAINSTRUÇÕES
+INSTRUÇÕES          -->     INSTRUÇÃO LISTAINSTRUÇÕES
 
 INSTRUÇÃO           -->     CONDICIONAL
                     |       LEITURA
                     |       ESCRITA
                     |       FUNÇÃO
                     |       ATRIBUICAO
-                    |       LOOPS
+                    |       PARA
+                    |       ENQUANTO
                     |       RETORNO
                     |       EXPRESSÃO
 
-LISTAINSTRUÇÕES     -->     enter INSTRUÇÃO LISTAINSTRUÇÕES  |   E {global.tab -= 1}
+LISTAINSTRUÇÕES     -->     INSTRUÇÃO LISTAINSTRUÇÕES  |  ε{global.tab -= 1}
 
-CONDICIONAL         -->     se FORMA : {golbal.tab += 1} BLOCOOBRIGATORIO SENAO
+CONDICIONAL         -->     se ( EXPRESSÃO ) : {global.tab += 1} BLOCOOBRIGATORIO SENAO BLOCO
 
-FORMA               -->     espaco EXPRESSÃO  | (EXPRESSÃO)
-
-SENAO               -->     senao : BLOCOOBRIGATORIO   |   E {global.tab -= 1}
+SENAO               -->     senao : BLOCOOBRIGATORIO   |  ε{global.tab -= 1}
 
 LEITURA             -->     ler ( TERMOLEITURA NOVOTERMOLEITURA )
 
@@ -45,13 +46,15 @@ TERMOESCRITA        -->     id DIMENSAO | CONSTANTE | texto
 
 NOVOTERMOESCRITA    -->     , TERMOESCRITA NOVOTERMOESCRITA | ε
 
+FUNÇÃO              -->     funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO BLOCO
+
 ATRIBUIÇÃO          -->     id = COMPLEMENTO 
 
 COMPLEMENTO         -->     EXPRESSÃO | FUNÇÃO
 
-FUNÇÃO              -->     funcao id ( PARAMETRO ) : enter {global.tab += 1} BLOCOOBRIGATORIO BLOCO
+ENQUANTO            -->     enquanto ( EXPRESSÃO ): {global.tab += 1} BLOCOOBRIGATORIO BLOCO
 
-//PAREI AQUI EM FUNÇÃO ---------------------------------------------------------------------------------------------------------------------------------------
+RETORNO             -->     retorna EXPRESSÃO
 
 EXPRESSÃO           -->     EXPR_OU
 
@@ -65,7 +68,9 @@ EXPR_E2             -->     && EXPR_RELACIONAL EXPR_E2 | ε
 
 EXPR_RELACIONAL     -->     EXPR_ADITIVA EXPR_ RELACIONAL2
 
-EXPR_RELACIONAL2    -->     comp EXPR_ADITIVA | ε
+EXPR_RELACIONAL2    -->     OP_COMPARATIVO EXPR_ADITIVA | ε
+
+OP_COMPARATIVO      -->     < | <= | > | >= | == | != 
 
 EXPR_ADITIVA        -->     EXPR_MULTIPLICATIVA EXPR_ADITIVA2
 
@@ -86,17 +91,3 @@ TERMO               -->     id DIMENSAO2 | CONSTANTE
 SINAL               -->     + | - | ε
 
 CONSTANTE           -->     num_int | num_dec
-
-
-
-
-
-
-
-
-
-
-def tal:                        {global.tab = 1}
-    se x > y:                   {global.tab = 2}
-        print(''abobora)
-def tora:                                [se nao tem senao {global.tab = 1}]

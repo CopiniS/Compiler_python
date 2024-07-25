@@ -1,0 +1,323 @@
+{
+  "PROGRAMA": {
+    "funcao": "FUNÇÃOPRIMEIRA"
+  },
+  "FUNÇÃOPRIMEIRA": {
+    "funcao": "funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO"
+  },
+  "PARAMETRO": {
+    "id": "id PARAMETRO2",
+    ")": "ε"
+  },
+  "PARAMETRO2": {
+    ",": ", id PARAMETRO2",
+    ")": "ε"
+  },
+  "BLOCO": {
+    "enter": "enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε"
+  },
+  "BLOCOOBRIGATORIO": {
+    "enter": "enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES"
+  },
+  "INSTRUÇÕES": {
+    "se": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "ler": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "escreve": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "funcao": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "id": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "para": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "enquanto": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "retorna": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε"
+  },
+  "INSTRUÇÃO": {
+    "se": "CONDICIONAL",
+    "ler": "LEITURA",
+    "escreve": "ESCRITA",
+    "funcao": "FUNÇÃO",
+    "id": "ATRIBUIÇÃO",
+    "para": "PARA",
+    "enquanto": "ENQUANTO",
+    "retorna": "RETORNO"
+  },
+  "LISTAINSTRUÇÕES": {
+    "se": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "ler": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "escreve": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "funcao": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "id": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "para": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "enquanto": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "retorna": "INSTRUÇÃO LISTAINSTRUÇÕES",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε"
+  },
+  "CONDICIONAL": {
+    "se": "se ( EXPRESSÃO ) : {global.tab += 1} BLOCOOBRIGATORIO SENAO BLOCO"
+  },
+  "SENAO": {
+    "senao": "senao : BLOCOOBRIGATORIO",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε"
+  },
+  "LEITURA": {
+    "ler": "ler ( TERMOLEITURA NOVOTERMOLEITURA )"
+  },
+  "TERMOLEITURA": {
+    "id": "id DIMENSAO"
+  },
+  "NOVOTERMOLEITURA": {
+    ",": ", TERMOLEITURA NOVOTERMOLEITURA",
+    ")": "ε"
+  },
+  "DIMENSAO": {
+    "[": "[ EXPR_ADITIVA ] DIMENSAO",
+    ")": "ε",
+    ",": "ε"
+  },
+  "ESCRITA": {
+    "escreve": "escreve ( TERMOESCRITA NOVOTERMOESCRITA )"
+  },
+  "TERMOESCRITA": {
+    "id": "id DIMENSAO",
+    "CONSTANTE": "CONSTANTE",
+    "texto": "texto"
+  },
+  "NOVOTERMOESCRITA": {
+    ",": ", TERMOESCRITA NOVOTERMOESCRITA",
+    ")": "ε"
+  },
+  "FUNÇÃO": {
+    "funcao": "funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO BLOCO"
+  },
+  "ATRIBUIÇÃO": {
+    "id": "id = COMPLEMENTO"
+  },
+  "COMPLEMENTO": {
+    "id": "EXPRESSÃO",
+    "CONSTANTE": "EXPRESSÃO",
+    "texto": "EXPRESSÃO",
+    "(": "EXPRESSÃO",
+    "+": "EXPRESSÃO",
+    "-": "EXPRESSÃO",
+    "num_int": "EXPRESSÃO",
+    "num_dec": "EXPRESSÃO",
+    "funcao": "FUNÇÃO"
+  },
+  "ENQUANTO": {
+    "enquanto": "enquanto ( EXPRESSÃO ): {global.tab += 1} BLOCOOBRIGATORIO BLOCO"
+  },
+  "RETORNO": {
+    "retorna": "retorna EXPRESSÃO"
+  },
+  "EXPRESSÃO": {
+    "id": "EXPR_OU",
+    "CONSTANTE": "EXPR_OU",
+    "texto": "EXPR_OU",
+    "(": "EXPR_OU",
+    "+": "EXPR_OU",
+    "-": "EXPR_OU",
+    "num_int": "EXPR_OU",
+    "num_dec": "EXPR_OU"
+  },
+  "EXPR_OU": {
+    "id": "EXPR_E EXPR_OU2",
+    "CONSTANTE": "EXPR_E EXPR_OU2",
+    "texto": "EXPR_E EXPR_OU2",
+    "(": "EXPR_E EXPR_OU2",
+    "+": "EXPR_E EXPR_OU2",
+    "-": "EXPR_E EXPR_OU2",
+    "num_int": "EXPR_E EXPR_OU2",
+    "num_dec": "EXPR_E EXPR_OU2"
+  },
+  "EXPR_OU2": {
+    "||": "|| EXPR_E EXPR_OU2",
+    ")": "ε",
+    ",": "ε",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε",
+    "]": "ε"
+  },
+  "EXPR_E": {
+    "id": "EXPR_RELACIONAL EXPR_E2",
+    "CONSTANTE": "EXPR_RELACIONAL EXPR_E2",
+    "texto": "EXPR_RELACIONAL EXPR_E2",
+    "(": "EXPR_RELACIONAL EXPR_E2",
+    "+": "EXPR_RELACIONAL EXPR_E2",
+    "-": "EXPR_RELACIONAL EXPR_E2",
+    "num_int": "EXPR_RELACIONAL EXPR_E2",
+    "num_dec": "EXPR_RELACIONAL EXPR_E2"
+  },
+  "EXPR_E2": {
+    "&&": "&& EXPR_RELACIONAL EXPR_E2",
+    "||": "ε",
+    ")": "ε",
+    ",": "ε",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε",
+    "]": "ε"
+  },
+  "EXPR_RELACIONAL": {
+    "id": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "CONSTANTE": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "texto": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "(": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "+": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "-": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "num_int": "EXPR_ADITIVA EXPR_RELACIONAL2",
+    "num_dec": "EXPR_ADITIVA EXPR_RELACIONAL2"
+  },
+  "EXPR_RELACIONAL2": {
+    "<": "OP_COMPARATIVO EXPR_ADITIVA",
+    "<=": "OP_COMPARATIVO EXPR_ADITIVA",
+    ">": "OP_COMPARATIVO EXPR_ADITIVA",
+    ">=": "OP_COMPARATIVO EXPR_ADITIVA",
+    "==": "OP_COMPARATIVO EXPR_ADITIVA",
+    "!=": "OP_COMPARATIVO EXPR_ADITIVA",
+    "&&": "ε",
+    "||": "ε",
+    ")": "ε",
+    ",": "ε",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε",
+    "]": "ε"
+  },
+  "EXPR_ADITIVA": {
+    "id": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "CONSTANTE": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "texto": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "(": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "+": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "-": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "num_int": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "num_dec": "EXPR_MULTIPLICATIVA EXPR_ADITIVA2"
+  },
+  "EXPR_ADITIVA2": {
+    "+": "+ EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "-": "- EXPR_MULTIPLICATIVA EXPR_ADITIVA2",
+    "<": "ε",
+    "<=": "ε",
+    ">": "ε",
+    ">=": "ε",
+    "==": "ε",
+    "!=": "ε",
+    "&&": "ε",
+    "||": "ε",
+    ")": "ε",
+    ",": "ε",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε",
+    "]": "ε"
+  },
+  "EXPR_MULTIPLICATIVA": {
+    "id": "FATOR EXPR_MULTIPLICATIVA2",
+    "CONSTANTE": "FATOR EXPR_MULTIPLICATIVA2",
+    "texto": "FATOR EXPR_MULTIPLICATIVA2",
+    "(": "FATOR EXPR_MULTIPLICATIVA2",
+    "+": "FATOR EXPR_MULTIPLICATIVA2",
+    "-": "FATOR EXPR_MULTIPLICATIVA2",
+    "num_int": "FATOR EXPR_MULTIPLICATIVA2",
+    "num_dec": "FATOR EXPR_MULTIPLICATIVA2"
+  },
+  "EXPR_MULTIPLICATIVA2": {
+    "*": "* FATOR EXPR_MULTIPLICATIVA2",
+    "/": "/ FATOR EXPR_MULTIPLICATIVA2",
+    "+": "ε",
+    "-": "ε",
+    "<": "ε",
+    "<=": "ε",
+    ">": "ε",
+    ">=": "ε",
+    "==": "ε",
+    "!=": "ε",
+    "&&": "ε",
+    "||": "ε",
+    ")": "ε",
+    ",": "ε",
+    "}": "ε",
+    "funcao": "ε",
+    "se": "ε",
+    "ler": "ε",
+    "escreve": "ε",
+    "id": "ε",
+    "para": "ε",
+    "enquanto": "ε",
+    "retorna": "ε",
+    "]": "ε"
+  },
+  "FATOR": {
+    "+": "SINAL TERMO",
+    "-": "SINAL TERMO",
+    "id": "SINAL TERMO",
+    "CONSTANTE": "SINAL TERMO",
+    "texto": "SINAL TERMO",
+    "(": "SINAL TERMO",
+    "!": "! FATOR",
+    "num_int": "SINAL TERMO",
+    "num_dec": "SINAL TERMO"
+  },
+  "TERMO": {
+    "id": "id DIMENSAO2",
+    "num_int": "CONSTANTE",
+    "num_dec": "CONSTANTE"
+  }
+}

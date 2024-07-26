@@ -399,7 +399,7 @@ class Lexer:
     #FUNCAO FINAL- (q6 --> q7 --> q0) 
     def estado_7(self):
         print('entra estado 7')
-        self.listaTokens.append('FUNCAO')
+        self.listaTokens.append('funcao')
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -457,7 +457,7 @@ class Lexer:
     #FALSO FINAL- (q10 --> q11 --> q12 | q98) 
     def estado_12(self):
         print('entra estado 12')
-        self.listaTokens.append('FALSO')
+        self.listaTokens.append('falso')
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -515,7 +515,7 @@ class Lexer:
     #NULO FINAL- (q16 --> q17 --> q0)
     def estado_17(self):
         print('entra estado 17')
-        self.listaTokens.append('NULO')
+        self.listaTokens.append('nulo')
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -612,7 +612,7 @@ class Lexer:
     #VERDADE FINAL - (q24 --> q25 --> q0)
     def estado_25(self):
         print('entra estado 25')
-        self.listaTokens.append('VERDADE')
+        self.listaTokens.append('verdade')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -699,7 +699,7 @@ class Lexer:
     #CLASSE FINAL - (q31 --> q32 --> q0)
     def estado_32(self):
         print('entra estado 32')
-        self.listaTokens.append('CLASSE')
+        self.listaTokens.append('classe')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -796,7 +796,7 @@ class Lexer:
     #CONTINUA FINAL - (q39 --> q40 --> q0)
     def estado_40(self):
         print('entra estado 40')
-        self.listaTokens.append('CONTINUA')
+        self.listaTokens.append('continua')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -831,7 +831,7 @@ class Lexer:
     #SE FINAL - (q42 --> q43 --> q0)
     def estado_43(self):
         print('entra estado 43')
-        self.listaTokens.append('SE')
+        self.listaTokens.append('se')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -879,7 +879,7 @@ class Lexer:
     #SENAO FINAL - (q46 --> q47 --> q0)
     def estado_47(self):
         print('entra estado 47')
-        self.listaTokens.append('SENAO')
+        self.listaTokens.append('senao')
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -911,7 +911,7 @@ class Lexer:
     #SENAOSE FINAL - (q49 --> q50 --> q0)
     def estado_50(self):
         print('entra estado 50')
-        self.listaTokens.append('SENAOSE')
+        self.listaTokens.append('senaose')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -943,7 +943,7 @@ class Lexer:
     #DE FINAL - (q52 --> q53 --> q0)
     def estado_53(self):
         print('entra estado 53')
-        self.listaTokens.append('DE')
+        self.listaTokens.append('de')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1062,7 +1062,7 @@ class Lexer:
     #E FINAL - (Q62 --> q63 --> q0)
     def estado_63(self):
         print('entra estado 63')
-        self.listaTokens.append('E')
+        self.listaTokens.append('e')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1159,7 +1159,7 @@ class Lexer:
     #ENQUANTO FINAL- (q70 --> q71 --> q0)
     def estado_71(self):
         print('entra estado 71')
-        self.listaTokens.append('ENQUANTO')
+        self.listaTokens.append('enquanto')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1230,7 +1230,7 @@ class Lexer:
     #TEXTO FINAL - (q76 --> q77 --> q0)
     def estado_77(self):
         print('entra estado 77')
-        self.listaTokens.append('TEXTO')
+        self.listaTokens.append('texto')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1360,7 +1360,7 @@ class Lexer:
     #RETORNA FINAL - (q87 --> q88 --> q0)
     def estado_88(self):
         print('entra estado 88')
-        self.listaTokens.append('RETORNA')
+        self.listaTokens.append('retorna')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1421,7 +1421,7 @@ class Lexer:
     #PARA FINAL - (q92 --> q93 --> q0)
     def estado_93(self):
         print('entra estado 93')
-        self.listaTokens.append('PARA')
+        self.listaTokens.append('para')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1466,7 +1466,7 @@ class Lexer:
     #PASSA FINAL - (q96 --> q97 -->q0)
     def estado_97(self):
         print('entra estado 97')
-        self.listaTokens.append('PASSA')
+        self.listaTokens.append('passa')
 
         self.lexema = ''
         self.estadoAtual = 0
@@ -1487,11 +1487,11 @@ class Lexer:
     def estado_99(self):
         print('entra estado 99')
         if self.lexema not in self.tabelaSimbolos:
-            self.listaTokens.append(('ID', len(self.tabelaSimbolos)))
+            self.listaTokens.append(('id', len(self.tabelaSimbolos)))
             self.tabelaSimbolos.append(self.lexema)
         else:
             indice = self.tabelaSimbolos.index(self.lexema)
-            self.listaTokens.append(('ID', indice))
+            self.listaTokens.append(('id', indice))
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -1513,7 +1513,7 @@ class Lexer:
     #NUMERO INTEIRO FINAL- (q100 --> q101 --> q0)
     def estado_101(self):
         print('entra no estado 101')
-        self.listaTokens.append(('INTEIRO', self.lexema))
+        self.listaTokens.append(('num_inteiro', self.lexema))
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -1564,7 +1564,7 @@ class Lexer:
     #NUMERO REAL FINAL - (q104 --> q106 --> q0)
     def estado_106(self):
         print('entra no estado 106')
-        self.listaTokens.append(('REAL', self.lexema))
+        self.listaTokens.append(('num_real', self.lexema))
         
         self.lexema = ''
         self.estadoAtual = 0
@@ -1820,27 +1820,27 @@ class Lexer:
     #' FINAL  -  (q0 --> q136 --> q0)
     def estado_136(self):
         print('entra no estado 136')
-        self.listaTokens.append('ASPAS')
+        self.listaTokens.append('aspas')
 
         self.estadoAtual = 0
 
     #ESPACO FINAL  -  (q0 --> q137 --> q0)
     def estado_137(self):
         print('entra no estado 137')
-        self.listaTokens.append('ESPACO')
+        # self.listaTokens.append('ESPACO')
 
         self.estadoAtual = 0
 
     #\t FINAL  -  (q0 --> q138 --> q0)
     def estado_138(self):
         print('entra no estado 138')
-        self.listaTokens.append('TAB')
+        self.listaTokens.append('tab')
 
         self.estadoAtual = 0
 
     #\n FINAL  -  (q0 --> q139 --> q0)
     def estado_139(self):
         print('entra no estado 139')
-        self.listaTokens.append('ENTER')
+        self.listaTokens.append('enter')
 
         self.estadoAtual = 0

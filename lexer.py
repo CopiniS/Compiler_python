@@ -1259,10 +1259,10 @@ class Lexer:
             self.estadoAtual = 80
             self.estado_80()
 
-    #OU - (q79 --> q80 --> q0)
+    #OU FINAL- (q79 --> q80 --> q0)
     def estado_80(self):
         print('entra estado 80')
-        self.listaTokens.append('OU')
+        self.listaTokens.append('ou')
 
         self.lexema = ''
         self.estadoAtual = 0

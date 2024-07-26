@@ -53,11 +53,11 @@ EXPRESSÃO           -->     EXPR_OU
 
 EXPR_OU             -->     EXPR_E EXPR_OU2
 
-EXPR_OU2            -->     || EXPR_E EXPR_OU2 | ε
+EXPR_OU2            -->     ou EXPR_E EXPR_OU2 | ε
 
 EXPR_E              -->     EXPR_RELACIONAL EXPR_E2
 
-EXPR_E2             -->     && EXPR_RELACIONAL EXPR_E2 | ε
+EXPR_E2             -->     e EXPR_RELACIONAL EXPR_E2 | ε
 
 EXPR_RELACIONAL     -->     EXPR_ADITIVA EXPR_RELACIONAL2
 
@@ -79,7 +79,7 @@ OP_MULTIPLICATIVO   -->      * | /
 
 FATOR               -->     SINAL TERMO | texto | ! FATOR | ( EXPRESSÃO )
 
-TERMO               -->     id DIMENSAO2 | CONSTANTE
+TERMO               -->     id DIMENSAO | CONSTANTE
 
 SINAL               -->     + | - | ε
 

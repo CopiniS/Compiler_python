@@ -1,25 +1,49 @@
-global.tab = 0
+PROGRAMA            -->     INSTRUCOESINICIO
 
-PROGRAMA            -->     INSTRUCOES
-
-BLOCO               -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES  |  ε {global.tab -= 1}
-
-BLOCOOBRIGATORIO    -->     enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES    
+BLOCO               -->     NOVALINHA indent INSTRUCOES DEDENT  
    
-INSTRUÇÕES          -->     INSTRUÇÃO BLOCO
+NOVALINHA           -->     novaLinha NOVALINHA2
 
-INSTRUÇÃO           -->     CONDICIONAL
-                    |       LEITURA
+DEDENT              -->     novaLinha dedent | dedent
+
+NOVALINHA2          -->     novaLinha NOVALINHA2 | ε
+
+INSTRUCOESINICIO    -->     INSTRUCAO INTRUCOES2 | ε  
+
+INSTRUÇÕES          -->     INSTRUÇÃO INSTRUCOES2
+
+INSTRUCOES2         -->     NOVALINHA INSTRUCAO INSTRUCOES2 | ε
+
+INSTRUCAO           -->     INSTRUCAOSIMPLES | INSTRUCAOCOMPOSTA
+
+INSTRUCAOSIMPLES    -->     LEITURA
                     |       ESCRITA
-                    |       FUNÇÃO
                     |       ATRIBUIÇÃO
-                    |       ENQUANTO
                     |       RETORNO
-                    |       EXPRESSÃO
+                    |       passa
+                    |       EXPRESSAO
 
-CONDICIONAL         -->     se ( EXPRESSÃO ) : {global.tab += 1} BLOCOOBRIGATORIO SENAO
+INSTRUCAOCOMPOSTA   -->     CONDICIONAL
+                    |       FUNÇÃO 
+                    |       ENQUANTO 
+                    |       CLASSE
+                    |       PARA
 
-SENAO               -->     senao : {global.tab += 1} BLOCOOBRIGATORIO    |  ε {global.tab -= 1}
+CONDICIONAL         -->     se ( EXPRESSAO ) : BLOCO SENAOSE SENAO
+
+SENAOSE             -->     senaose ( EXPRESSAO ) : BLOCO | ε
+
+SENAO               -->     senao : BLOCO | ε 
+
+FUNÇÃO              -->     funcao id ( PARAMETRO ) : BLOCO
+
+PARAMETRO           -->     id PARAMETRO2   |  ε
+
+PARAMETRO2          -->     , id PARAMETRO2 |  ε
+
+ENQUANTO            -->     enquanto ( EXPRESSAO ) : BLOCO
+
+CLASSE              -->     classe id : BLOCO
 
 LEITURA             -->     ler ( TERMOLEITURA NOVOTERMOLEITURA )
 
@@ -35,21 +59,13 @@ TERMOESCRITA        -->     id DIMENSAO | CONSTANTE | texto
 
 NOVOTERMOESCRITA    -->     , TERMOESCRITA NOVOTERMOESCRITA | ε
 
-FUNÇÃO              -->     funcao id ( PARAMETRO ) : {global.tab += 1} BLOCOOBRIGATORIO 
-
-PARAMETRO           -->     id PARAMETRO2   |  ε
-
-PARAMETRO2          -->     , id PARAMETRO2 |  ε
-
 ATRIBUIÇÃO          -->     id = COMPLEMENTO 
 
-COMPLEMENTO         -->     EXPRESSÃO | FUNÇÃO
+COMPLEMENTO         -->     EXPRESSAO | FUNÇÃO
 
-ENQUANTO            -->     enquanto ( EXPRESSÃO ): {global.tab += 1} BLOCOOBRIGATORIO
+RETORNO             -->     retorna EXPRESSAO
 
-RETORNO             -->     retorna EXPRESSÃO
-
-EXPRESSÃO           -->     EXPR_OU
+EXPRESSAO           -->     EXPR_OU
 
 EXPR_OU             -->     EXPR_E EXPR_OU2
 
@@ -77,7 +93,7 @@ EXPR_MULTIPLICATIVA2-->     OP_MULTIPLICATIVO FATOR EXPR_MULTIPLICATIVA2 | ε
 
 OP_MULTIPLICATIVO   -->      * | / 
 
-FATOR               -->     SINAL TERMO | texto | ! FATOR | ( EXPRESSÃO )
+FATOR               -->     SINAL TERMO | texto | ! FATOR | ( EXPRESSAO )
 
 TERMO               -->     id DIMENSAO2 | CONSTANTE
 

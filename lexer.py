@@ -1,8 +1,12 @@
 import re
+from collections import deque;
 
 class Lexer:
     def __init__(self, trechoCodigo):
         self.estadoAtual = 0
+        self.nivelIndetacao = 0
+        self.pilhaTab = deque()
+        self.pilhaTab.append(0)
         self.trechoCodigo = trechoCodigo
         self.caracterAtual = trechoCodigo[0]
         self.contador = 0
@@ -161,8 +165,12 @@ class Lexer:
             }
             switch_case.get(self.estadoAtual, self.padrao)()
             self.contador+=1
-            print('lista tokens: ', self.listaTokens)
-            print('tab simb', self.tabelaSimbolos)
+        while(len(self.pilhaTab) > 1):
+            self.listaTokens.append(('dedent', None))
+            self.pilhaTab.pop()
+        self.listaTokens.append(('$', None))
+        print('lista tokens: ', self.listaTokens)
+        print('tab simb', self.tabelaSimbolos)
            
 
     #caso de nao haver o estado chamado, só para a fase de testes
@@ -306,18 +314,19 @@ class Lexer:
             self.estado_136()
         # espaço para finalizar os lexemas
         elif self.caracterAtual == ' ':
-            self.estadoAtual = 137
-            self.estado_137()
+            pass
+            # self.estadoAtual = 137
+            # self.estado_137()
         # tabulação para organizar as hierarquias
         elif self.caracterAtual == '\t':
-            self.estadoAtual = 138
-            self.estado_138()
+            pass
+            # self.estadoAtual = 138
+            # self.estado_138()
         # quebra de linha para organizar as linhas
         elif self.caracterAtual == '\n':
             self.estadoAtual = 139
             self.estado_139()
-        print('estadoAtual: ', self.estadoAtual)
-        
+
     #FUNCAO | FALSO - (q0 --> q1 --> q2 | q8 | q98 | q99)
     def estado_1(self):
         print('entra estado 1')
@@ -1824,23 +1833,45 @@ class Lexer:
 
         self.estadoAtual = 0
 
-    #ESPACO FINAL  -  (q0 --> q137 --> q0)
+    #IDENTAÇÃO  -  (q0 --> q137 --> q0)
     def estado_137(self):
         print('entra no estado 137')
-        # self.listaTokens.append('ESPACO')
+        if(self.caracterAtual == ' '):
+            self.nivelIndetacao += 1
+        elif(self.caracterAtual == '\t'):
+            self.nivelIndetacao += 4
+            print('aqui')
+        else:
+            self.estadoAtual = 138
+            self.estado_138()
+            
 
-        self.estadoAtual = 0
 
-    #\t FINAL  -  (q0 --> q138 --> q0)
+    #IDENTAÇÃO  -  (q0 --> q138 --> q0)
     def estado_138(self):
         print('entra no estado 138')
-        self.listaTokens.append(('tab', None))
-
+        if(self.pilhaTab[-1] < self.nivelIndetacao):
+            self.pilhaTab.append(self.nivelIndetacao)
+            self.listaTokens.append(('indent', None))
+        elif(self.pilhaTab[-1] > self.nivelIndetacao):
+            while(self.pilhaTab[-1] > self.nivelIndetacao):
+                self.listaTokens.append(('dedent', None))
+                self.pilhaTab.pop()
+        self.nivelIndetacao = 0
+        self.lexema = ''
         self.estadoAtual = 0
+        self.contador-=1
 
     #\n FINAL  -  (q0 --> q139 --> q0)
     def estado_139(self):
         print('entra no estado 139')
-        self.listaTokens.append(('enter', None))
-
-        self.estadoAtual = 0
+        print('caracter atual: ', 'comida'+self.caracterAtual+'boa')
+        if(self.caracterAtual == '\n'):
+            pass
+        elif(self.caracterAtual == ' ' or self.caracterAtual == '\t'):
+            self.listaTokens.append('novaLinha')
+            self.estadoAtual = 137
+            self.estado_137()
+        else:
+            self.listaTokens.append('novaLinha')
+            self.estadoAtual = 0

@@ -15,8 +15,6 @@ class Parser:
         lexer.getToken()
         self.tabelaSimb = lexer.tabelaSimbolos
         self.listaTokens = lexer.listaTokens
-        self.listaTokens.append(('$', None))
-        print('lista de TOKENS PRIMEIRA: ', self.listaTokens)
         self.achaTokenAtual()
 
     def achaTokenAtual(self):
@@ -32,28 +30,26 @@ class Parser:
                 break
         return quantidadeTab
 
+    def removeNovasLinhas(self):
+        while self.tokenAtual == 'enter':
+            self.listaTokens.pop(0)
+        self.achaTokenAtual()
+
     def empilhaTab(self):
-        print('self.tab: ', self.tab)
         i = 0
         for i in range(self.tab):
             self.pilha.append('tab') 
 
     def deriva(self, derivacoes):
-        print('self pilha antes: ', self.pilha)
         self.pilha.pop()
         for derivacao in derivacoes:
             self.pilha.append(derivacao)
 
-        print('self pilha depois: ', self.pilha)
-    
-    def popTerminais(self):
+    def removeTerminais(self):
         while(self.tokenAtual == self.pilha[-1]):
             self.listaTokens.pop(0)
             self.pilha.pop()
             self.achaTokenAtual()
-
-            print('self.listaTokens: ', self.listaTokens)
-            print('self.pilha: ', self.pilha)
 
     def fazAnalise(self):
         while(len(self.pilha) != 0):
@@ -63,7 +59,7 @@ class Parser:
                 print('ERRO')
                 break
 
-            self.popTerminais()
+            self.removeTerminais()
             switch_case = {
                 'PROGRAMA' : self.programa,
                 
@@ -178,25 +174,20 @@ class Parser:
     def bloco(self):
         print('entra em bloco')
         if self.tokenAtual == 'enter':
+            self.removeNovasLinhas()
             quantidadeTab = self.calculaTab()
-            
             ##VERIFICA EM QUAL NIVEL ESTÁ O BLOCO
             if quantidadeTab == self.tab:
                 ## BLOCO --> enter {empilha na pilha 'tab' 'global.tab' vezes} INSTRUÇÕES
-                self.pilha.pop()
-                self.pilha.append('INSTRUCOES')
+                self.deriva(['INSTRUCOES'])
                 self.empilhaTab()
-                self.pilha.append('enter')
             elif quantidadeTab < self.tab or self.tokenAtual == '$':
                 ## BLOCO --> ε {global.tab -= 1}
                 self.pilha.pop()
                 self.tab -= 1
-                print('self.tab após 1: ' , self.tab)
             else:
                 #ERRO
                 print('ERRO BLOCO quantTab > self.tab')
-                print('tab: ', self.tab)
-                print('quantita: ', quantidadeTab)
                 self.pilha.clear()
         else: 
             #ERRO
@@ -782,13 +773,9 @@ class Parser:
             print('ERRO CONSTANTE: simbolo nao reconhecido')
             self.pilha.clear()
 
-
 print('Digite o código. Para compilar digite Ctrl+Z')
 codigo = sys.stdin.read()
 x = Parser() 
 x.getListaTokenAndTabSimb(codigo)
 
 x.fazAnalise()
-print('Lista Tokens: ', x.listaTokens)
-print('tab simb: ' , x.tabelaSimb)
-print('pilha: ', x.pilha)

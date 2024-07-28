@@ -1869,9 +1869,9 @@ class Lexer:
         if(self.caracterAtual == '\n'):
             pass
         elif(self.caracterAtual == ' ' or self.caracterAtual == '\t'):
-            self.listaTokens.append('novaLinha')
+            self.listaTokens.append(('novalinha', None))
             self.estadoAtual = 137
             self.estado_137()
         else:
-            self.listaTokens.append('novaLinha')
+            self.listaTokens.append(('novalinha', None))
             self.estadoAtual = 0

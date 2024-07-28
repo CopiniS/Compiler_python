@@ -1,7 +1,7 @@
 {
     "FIRST": {
-      "PROGRAMA": ["funcao", "se", "ler", "escreve", "id","enquanto",
-       "retorna", "+", "-", "num_int", "num_dec", "texto", "!", "(", "ε"],
+      "PROGRAMA": ["passa","funcao", "se", "ler", "escreve","enquanto",
+       "classe", "retorna", "+", "-",  "id", "num_int", "num_dec", "texto", "!", "(", "ε"],
       
       "BLOCO": ["enter", "ε"],
       "BLOCOOBRIGATORIO": ["enter"],

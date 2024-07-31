@@ -8,9 +8,9 @@ DEDENT              -->     novaLinha dedent | dedent
 
 NOVALINHA2          -->     novaLinha NOVALINHA2 | ε
 
-INSTRUCOESINICIO    -->     INSTRUCAO INTRUCOES2 | ε  
+INSTRUCOESINICIO    -->     INSTRUCAO INSTRUCOES2 | ε  
 
-INSTRUÇÕES          -->     INSTRUÇÃO INSTRUCOES2
+INSTRUCOES          -->     INSTRUÇÃO INSTRUCOES2
 
 INSTRUCOES2         -->     NOVALINHA INSTRUCAO INSTRUCOES2 | ε
 
@@ -21,7 +21,6 @@ INSTRUCAOSIMPLES    -->     LEITURA
                     |       ATRIBUIÇÃO
                     |       RETORNO
                     |       passa
-                    |       EXPRESSAO
 
 INSTRUCAOCOMPOSTA   -->     CONDICIONAL
                     |       FUNÇÃO 

@@ -58,7 +58,7 @@ class Parser:
             if len(self.listaTokens) == 0:
                 print('ERRO')
                 break
-
+            print('token atual',self.tokenAtual)
             self.removeTerminais()
             switch_case = {
                 'PROGRAMA' : self.programa,
@@ -168,14 +168,7 @@ class Parser:
         self.tokenAtual == 'ler' or 
         self.tokenAtual == 'escrever' or 
         self.tokenAtual == 'id' or  
-        self.tokenAtual == 'retorna' or 
-        self.tokenAtual == '+' or 
-        self.tokenAtual == '-' or 
-        self.tokenAtual == 'num_inteiro' or 
-        self.tokenAtual == 'num_real' or 
-        self.tokenAtual == 'texto' or 
-        self.tokenAtual == '!' or 
-        self.tokenAtual == '('):
+        self.tokenAtual == 'retorna'):
             self.deriva(['INSTRUCOESINICIO'])
         elif(self.tokenAtual == '$'):
             #SUCESSO
@@ -195,14 +188,7 @@ class Parser:
         self.tokenAtual == 'ler' or 
         self.tokenAtual == 'escrever' or 
         self.tokenAtual == 'id' or  
-        self.tokenAtual == 'retorna' or 
-        self.tokenAtual == '+' or 
-        self.tokenAtual == '-' or 
-        self.tokenAtual == 'num_inteiro' or 
-        self.tokenAtual == 'num_real' or 
-        self.tokenAtual == 'texto' or 
-        self.tokenAtual == '!' or 
-        self.tokenAtual == '('):
+        self.tokenAtual == 'retorna'):
             #INSTRUCOESINICIO --> INSTRUCAO INTRUCOES2 
             self.deriva(['INSTRUCOES2', 'INSTRUCAO'])
         elif(self.tokenAtual == '$'):
@@ -261,14 +247,7 @@ class Parser:
         self.tokenAtual == 'ler' or 
         self.tokenAtual == 'escrever' or 
         self.tokenAtual == 'id' or  
-        self.tokenAtual == 'retorna' or 
-        self.tokenAtual == '+' or 
-        self.tokenAtual == '-' or 
-        self.tokenAtual == 'num_inteiro' or 
-        self.tokenAtual == 'num_real' or 
-        self.tokenAtual == 'texto' or 
-        self.tokenAtual == '!' or 
-        self.tokenAtual == '('):
+        self.tokenAtual == 'retorna'):
             #INSTRUÇÕES --> INSTRUÇÃO INSTRUCOES2
             self.deriva(['INSTRUCOES2', 'INSTRUCAO'])
 
@@ -286,14 +265,7 @@ class Parser:
         self.tokenAtual == 'ler' or 
         self.tokenAtual == 'escrever' or 
         self.tokenAtual == 'id' or  
-        self.tokenAtual == 'retorna' or 
-        self.tokenAtual == '+' or 
-        self.tokenAtual == '-' or 
-        self.tokenAtual == 'num_inteiro' or 
-        self.tokenAtual == 'num_real' or 
-        self.tokenAtual == 'texto' or 
-        self.tokenAtual == '!' or 
-        self.tokenAtual == '('):
+        self.tokenAtual == 'retorna'):
             #INSTRUCOES2 --> NOVALINHA INSTRUCAO INSTRUCOES2 | ε
             self.deriva(['INSTRUCOES2', 'INSTRUCAO', 'NOVALINHA'])
         elif(self.tokenAtual == '$' or
@@ -332,16 +304,6 @@ class Parser:
         elif self.tokenAtual == 'retorna':
             # INSTRUÇÃO --> RETORNO
             self.deriva(['RETORNO'])
-        elif(self.tokenAtual == '+' or 
-        self.tokenAtual == '-' or 
-        self.tokenAtual == 'id' or
-        self.tokenAtual == 'num_inteiro' or 
-        self.tokenAtual == 'num_real' or 
-        self.tokenAtual == 'texto' or 
-        self.tokenAtual == '!' or 
-        self.tokenAtual == '('):
-            # INSTRUÇÃO --> EXPRESSAO
-            self.deriva(['EXPRESSAO'])
         else:
             #ERRO
             print('ERRO INSTRUCAO: simbolo nao reconhecido')
@@ -581,8 +543,9 @@ class Parser:
         if(self.tokenAtual == 'ou'):
             #EXPR_OU2 --> ou EXPR_E EXPR_OU2
             self.deriva(['EXPR_OU2', 'EXPR_E', 'ou'])
-        elif(self.tokenAtual == 'enter' or
-             self.tokenAtual == ')'):
+        elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == ')'):
             #EXPR_OU2 --> ε
             self.pilha.pop()
         else:
@@ -610,8 +573,10 @@ class Parser:
         if(self.tokenAtual == 'e'):
             #EXPR_E2 --> e EXPR_RELACIONAL EXPR_E2
             self.deriva(['EXPR_E2', 'EXPR_RELACIONAL', 'e'])
-        elif(self.tokenAtual == 'enter' or
-             self.tokenAtual == ')'):
+        elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == ')' or
+        self.tokenAtual == 'ou'):
             #EXPR_E2 --> ε
             self.pilha.pop()
         else:
@@ -641,11 +606,12 @@ class Parser:
         self.tokenAtual == '>' or
         self.tokenAtual == '>=' or 
         self.tokenAtual == '==' or 
-        self.tokenAtual == '!=' or
-        self.tokenAtual == ')'): 
+        self.tokenAtual == '!='): 
             #EXPR_RELACIONAL2 --> OP_COMPARATIVO EXPR_ADITIVA
             self.deriva(['EXPR_ADITIVA', 'OP_COMPARATIVO'])
-        elif(self.tokenAtual == 'enter' or
+        elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == ')' or
         self.tokenAtual == 'e' or
         self.tokenAtual == 'ou'):
             #EXPR_REALACIONAL2 --> ε
@@ -699,16 +665,17 @@ class Parser:
         if(self.tokenAtual == '+' or self.tokenAtual == '-'):
             #EXPR_ADITIVA2 --> OP_ADITIVO EXPR_MULTIPLICATIVA EXPR_ADITIVA2
             self.deriva(['EXPR_ADITIVA2', 'EXPR_MULTIPLICATIVA', 'OP_ADITIVO'])
-        elif(self.tokenAtual == '<' or 
+        elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == ')' or
+        self.tokenAtual == 'e' or
+        self.tokenAtual == 'ou' or
+        self.tokenAtual == '<' or 
         self.tokenAtual == '<=' or 
         self.tokenAtual == '>' or
         self.tokenAtual == '>=' or 
         self.tokenAtual == '==' or 
-        self.tokenAtual == '!=' or
-        self.tokenAtual == 'e' or
-        self.tokenAtual == 'ou' or
-        self.tokenAtual == ')' or
-        self.tokenAtual == 'enter'): 
+        self.tokenAtual == '!='): 
             #EXPR_ADITIVA2 -->  ε
             self.pilha.pop()
         else:
@@ -748,16 +715,17 @@ class Parser:
         if(self.tokenAtual == '*' or self.tokenAtual == '/'):
             #EXPR_MULTIPLICATIVA2 --> OP_MULTIPLICATIVO FATOR EXPR_MULTIPLICATIVA2
             self.deriva(['EXPR_MULTIPLICATIVA2', 'FATOR', 'OP_MULTIPLICATIVO'])
-        elif(self.tokenAtual == '<' or 
+        elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == ')' or
+        self.tokenAtual == 'e' or
+        self.tokenAtual == 'ou' or
+        self.tokenAtual == '<' or 
         self.tokenAtual == '<=' or 
         self.tokenAtual == '>' or
         self.tokenAtual == '>=' or 
         self.tokenAtual == '==' or 
         self.tokenAtual == '!=' or
-        self.tokenAtual == 'e' or
-        self.tokenAtual == 'ou' or
-        self.tokenAtual == 'enter' or
-        self.tokenAtual == ')' or
         self.tokenAtual == '+' or
         self.tokenAtual == '-'): 
             #EXPR_MULTIPLICATIVA2 -->  ε
@@ -819,16 +787,15 @@ class Parser:
         if(self.tokenAtual == '['):
             #DIMENSAO2 --> [ EXPR_ADITIVA ] DIMENSAO2
             self.deriva(['DIMENSAO2', ']', 'EXPR_ADITIVA', '['])
-        elif(self.tokenAtual == '<' or 
+        elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == ')' or
+        self.tokenAtual == '<' or 
         self.tokenAtual == '<=' or 
         self.tokenAtual == '>' or
         self.tokenAtual == '>=' or 
         self.tokenAtual == '==' or 
         self.tokenAtual == '!=' or
-        self.tokenAtual == 'e' or
-        self.tokenAtual == 'ou' or
-        self.tokenAtual == 'enter' or
-        self.tokenAtual == ')' or
         self.tokenAtual == '+' or
         self.tokenAtual == '-' or
         self.tokenAtual == '*' or

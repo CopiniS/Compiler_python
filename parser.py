@@ -58,7 +58,8 @@ class Parser:
             if len(self.listaTokens) == 0:
                 print('ERRO')
                 break
-            print('token atual',self.tokenAtual)
+            print('token atual: ',self.tokenAtual)
+            print('pilha atual: ', self.pilha)
             self.removeTerminais()
             switch_case = {
                 'PROGRAMA' : self.programa,
@@ -152,7 +153,7 @@ class Parser:
             }
             switch_case.get(self.pilha[-1], self.padrao)()
 
-        if len(self.listaTokens) == 1 and self.listaTokens[0][0] == 'enter':
+        if len(self.listaTokens) == 1 and self.tokenAtual == '$':
             #SUCESSO
             print('SUCESSO')
 

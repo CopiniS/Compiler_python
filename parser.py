@@ -53,11 +53,8 @@ class Parser:
 
     def fazAnalise(self):
         while(len(self.pilha) != 0):
-        # i = 0
-        # for i in range(10):
             if len(self.listaTokens) == 0:
-                print('ERRO')
-                break
+                sys.exit('Erro')
             print('token atual: ',self.tokenAtual)
             print('pilha atual: ', self.pilha)
             self.removeTerminais()
@@ -156,9 +153,13 @@ class Parser:
         if len(self.listaTokens) == 1 and self.tokenAtual == '$':
             #SUCESSO
             print('SUCESSO')
+        else:
+            #ERRO
+            sys.exit("Simbolo " + self.tokenAtual + " no lugar incorreto")
 
     def padrao(self):
         print('LEXEMA: ',self.pilha, ' - nao encontrado')
+        sys.exit('símbolo esperado: '+ self.pilha[-1])
 
     def programa(self):
         print('entra em programa')
@@ -177,8 +178,7 @@ class Parser:
 
         else:
             #ERRO
-            print('ERRO PROGRAMA: simbolo não permitido')
-            self.pilha.clear()
+            sys.exit('ERRO PROGRAMA: simbolo não permitido')
         
     def instrucoesInicio(self):  
         print('Entra em INSTRUCOESINICIO') 
@@ -203,8 +203,7 @@ class Parser:
             self.deriva(['DEDENT', 'INSTRUCOES', 'indent', 'NOVALINHA'])
         else: 
             #ERRO
-            print('ERRO BLOCO carcter diferente de NOVALINHA')
-            self.pilha.clear()
+            sys.exit('ERRO BLOCO carcter diferente de NOVALINHA')
 
     def novaLinha(self):
         if self.tokenAtual == 'novalinha':
@@ -212,8 +211,7 @@ class Parser:
             self.deriva(['NOVALINHA2', 'novalinha'])
         else: 
             #ERRO
-            print('ERRO NOVALINHA carcter diferente de novalinha')
-            self.pilha.clear()
+            sys.exit('ERRO NOVALINHA caracter diferente de novalinha')
 
     def novaLinha2(self):
         if self.tokenAtual == 'novalinha':
@@ -224,8 +222,7 @@ class Parser:
             #NOVALINHA2 --> ε
         else: 
             #ERRO
-            print('ERRO NOVALINHA2 carcter diferente de novalinha')
-            self.pilha.clear()
+            sys.exit('ERRO NOVALINHA2 carcter diferente de novalinha')
 
     def dedent(self):
         if(self.tokenAtual == 'novalinha'):
@@ -236,8 +233,7 @@ class Parser:
             self.deriva(['dedent'])
         else: 
             #ERRO
-            print('ERRO DEDENT: SIMBOLO NAO RECONHECIDO')
-            self.pilha.clear()
+            sys.exit('ERRO DEDENT: SIMBOLO NAO RECONHECIDO')
 
     def instrucoes(self):
         print('entra em instruções')
@@ -254,8 +250,7 @@ class Parser:
 
         else:
             #ERRO
-            print('ERRO INSTRUCOES: símbolo não permitido')
-            self.pilha.clear()
+            sys.exit('ERRO INSTRUCOES: símbolo não permitido')
 
     def instrucoes2(self):
         print('entra em instruções2')
@@ -276,8 +271,7 @@ class Parser:
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO INSTRUCOES2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO INSTRUCOES2: simbolo nao reconhecido')
 
     def instrucao(self):
         print('entra em instrução')
@@ -307,8 +301,7 @@ class Parser:
             self.deriva(['RETORNO'])
         else:
             #ERRO
-            print('ERRO INSTRUCAO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO INSTRUCAO: simbolo nao reconhecido')
 
     def condicional(self):
         if(self.tokenAtual == 'se'):
@@ -316,8 +309,7 @@ class Parser:
             self.deriva(['SENAO','SENAOSE', 'BLOCO', ':', ')', 'EXPRESSAO', '(', 'se'])
         else:
             #ERRO
-            print('ERRO CONDICIONAL: símbolo não permitido')
-            self.pilha.clear()
+            sys.exit('ERRO CONDICIONAL: símbolo não permitido')
 
     def senaose(self):
         if(self.tokenAtual == 'senaose'):

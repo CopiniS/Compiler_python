@@ -1,5 +1,6 @@
 import re
 from collections import deque;
+import sys;
 
 class Lexer:
     def __init__(self, trechoCodigo):
@@ -1875,3 +1876,10 @@ class Lexer:
         else:
             self.listaTokens.append(('novalinha', None))
             self.estadoAtual = 0
+
+
+# print('Digite o código. Para compilar digite Ctrl+Z')
+# codigo = sys.stdin.read()
+# x = Lexer(codigo) 
+# x.getToken()
+# print(x.listaTokens)

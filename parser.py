@@ -46,7 +46,10 @@ class Parser:
             self.pilha.append(derivacao)
 
     def removeTerminais(self):
+        print('dentro de removeTerminais. Token atual: ', self.tokenAtual )
+        print('dentro de removeTerminais. Topo da pilha: ', self.pilha[-1])
         while(self.tokenAtual == self.pilha[-1]):
+            print('entra aqui removendo:  ', self.tokenAtual)
             self.listaTokens.pop(0)
             self.pilha.pop()
             self.achaTokenAtual()
@@ -55,6 +58,7 @@ class Parser:
         while(len(self.pilha) != 0):
             if len(self.listaTokens) == 0:
                 sys.exit('Erro')
+            print('lista de tokens: ', self.listaTokens)
             print('token atual: ',self.tokenAtual)
             print('pilha atual: ', self.pilha)
             self.removeTerminais()
@@ -67,7 +71,9 @@ class Parser:
 
                 'NOVALINHA2' : self.novaLinha2,
 
-                'DEDENT' : self.dedent, 
+                'NOVALINHA3' : self.novaLinha3,
+
+                'DEDENT' : self.dedent,
                 
                 'INSTRUCOESINICIO' : self.instrucoesInicio,
                 
@@ -199,8 +205,8 @@ class Parser:
     def bloco(self):
         print('entra em bloco')
         if self.tokenAtual == 'novalinha':
-            #BLOCO --> NOVALINHA indent INSTRUCOES DEDENT 
-            self.deriva(['DEDENT', 'INSTRUCOES', 'indent', 'NOVALINHA'])
+            #BLOCO --> NOVALINHA indent INSTRUCOES dedent
+            self.deriva(['dedent', 'INSTRUCOES', 'indent', 'NOVALINHA'])
         else: 
             #ERRO
             sys.exit('ERRO BLOCO carcter diferente de NOVALINHA')
@@ -217,23 +223,47 @@ class Parser:
         if self.tokenAtual == 'novalinha':
             #NOVALINHA2 --> novaLinha NOVALINHA2
             self.deriva(['NOVALINHA2', 'novalinha'])
-        elif(self.tokenAtual == 'indent'):
+        elif(self.tokenAtual == 'indent' or
+        self.tokenAtual == 'dedent' or
+        self.tokenAtual == 'se' or  
+        self.tokenAtual == 'funcao' or 
+        self.tokenAtual == 'enquanto' or
+        self.tokenAtual == 'classe' or
+        self.tokenAtual == 'ler' or 
+        self.tokenAtual == 'escrever' or 
+        self.tokenAtual == 'id' or  
+        self.tokenAtual == 'retorna'):
             self.pilha.pop()
             #NOVALINHA2 --> ε
         else: 
             #ERRO
             sys.exit('ERRO NOVALINHA2 carcter diferente de novalinha')
 
-    def dedent(self):
-        if(self.tokenAtual == 'novalinha'):
-            #DEDENT --> novaLinha dedent
-            self.deriva(['dedent', 'novalinha'])
-        elif(self.tokenAtual == 'dedent'):
-            #DEDENT --> dedent
-            self.deriva(['dedent'])
+    def novaLinha3(self):
+        if self.tokenAtual == 'novalinha':
+            #NOVALINHA3 --> NOVALINHA DEDENT
+            self.deriva(['DEDENT', 'NOVALINHA'])
         else: 
             #ERRO
-            sys.exit('ERRO DEDENT: SIMBOLO NAO RECONHECIDO')
+            sys.exit('ERRO NOVALINHA3 carcter diferente de novalinha')
+
+    def dedent(self):
+        if self.tokenAtual == 'dedent':
+            #DEDENT --> dedent
+            self.deriva(['dedent'])
+        elif (self.tokenAtual == 'se' or  
+        self.tokenAtual == 'funcao' or 
+        self.tokenAtual == 'enquanto' or
+        self.tokenAtual == 'classe' or
+        self.tokenAtual == 'ler' or 
+        self.tokenAtual == 'escrever' or 
+        self.tokenAtual == 'id' or  
+        self.tokenAtual == 'retorna'):
+            #DEDENT --> ε
+            self.pilha.pop()
+        else:
+            #ERRO
+            sys.exit('ERRO DEDENT carcter nao reconhecido')
 
     def instrucoes(self):
         print('entra em instruções')
@@ -254,18 +284,10 @@ class Parser:
 
     def instrucoes2(self):
         print('entra em instruções2')
-        if(self.tokenAtual == 'se' or  
-        self.tokenAtual == 'funcao' or 
-        self.tokenAtual == 'enquanto' or
-        self.tokenAtual == 'classe' or
-        self.tokenAtual == 'ler' or 
-        self.tokenAtual == 'escrever' or 
-        self.tokenAtual == 'id' or  
-        self.tokenAtual == 'retorna'):
-            #INSTRUCOES2 --> NOVALINHA INSTRUCAO INSTRUCOES2 | ε
-            self.deriva(['INSTRUCOES2', 'INSTRUCAO', 'NOVALINHA'])
+        if(self.tokenAtual == 'novalinha'):
+            #INSTRUCOES2 --> NOVALINHA3 INSTRUCAO INSTRUCOES2
+            self.deriva(['INSTRUCOES2', 'INSTRUCAO', 'NOVALINHA3'])
         elif(self.tokenAtual == '$' or
-        self.tokenAtual == 'novalinha' or
         self.tokenAtual == 'dedent'):  
             #INSTRUCOES2 --> ε
             self.pilha.pop()
@@ -321,6 +343,9 @@ class Parser:
         self.tokenAtual == 'dedent'):
             #SENAOSE --> ε
             self.pilha.pop()
+        else:
+            #ERRO
+            sys.exit('ERRO SENAOSE: símbolo não permitido')
     
     def senao(self):
         if(self.tokenAtual == 'senao'):
@@ -330,6 +355,8 @@ class Parser:
         self.tokenAtual == 'novalinha' or
         self.tokenAtual == 'dedent'):
             #SENAO --> ε 
+            print('entra aqui no senao')
+            print('pilha no senao: ', self.pilha)
             self.pilha.pop()
         else:
             #ERRO

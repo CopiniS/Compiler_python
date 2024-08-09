@@ -15,41 +15,25 @@ class Parser:
         lexer.getToken()
         self.tabelaSimb = lexer.tabelaSimbolos
         self.listaTokens = lexer.listaTokens
+        print('Lista de tokens inicial: ', self.listaTokens)
         self.achaTokenAtual()
 
     def achaTokenAtual(self):
         self.tokenAtual = self.listaTokens[0][0]
         self.valorTokenAtual = self.listaTokens[0][1]
 
-    def calculaTab(self):
-        quantidadeTab = 0
-        for token in self.listaTokens:
-            if(token == 'tab'):
-                quantidadeTab += 1
-            else:
-                break
-        return quantidadeTab
-
-    def removeNovasLinhas(self):
-        while self.tokenAtual == 'enter':
-            self.listaTokens.pop(0)
-        self.achaTokenAtual()
-
-    def empilhaTab(self):
-        i = 0
-        for i in range(self.tab):
-            self.pilha.append('tab') 
-
     def deriva(self, derivacoes):
+        string = self.pilha[-1] + ' --> '
         self.pilha.pop()
         for derivacao in derivacoes:
             self.pilha.append(derivacao)
+            string = string + derivacao + ' '
+        print(string)
 
     def removeTerminais(self):
-        print('dentro de removeTerminais. Token atual: ', self.tokenAtual )
-        print('dentro de removeTerminais. Topo da pilha: ', self.pilha[-1])
+        print('checando se '+ self.tokenAtual + ' é igual a ' + self.pilha[-1])
         while(self.tokenAtual == self.pilha[-1]):
-            print('entra aqui removendo:  ', self.tokenAtual)
+            print(self.tokenAtual + ' é igual a ' + self.pilha[-1])
             self.listaTokens.pop(0)
             self.pilha.pop()
             self.achaTokenAtual()
@@ -58,9 +42,6 @@ class Parser:
         while(len(self.pilha) != 0):
             if len(self.listaTokens) == 0:
                 sys.exit('Erro')
-            print('lista de tokens: ', self.listaTokens)
-            print('token atual: ',self.tokenAtual)
-            print('pilha atual: ', self.pilha)
             self.removeTerminais()
             switch_case = {
                 'PROGRAMA' : self.programa,
@@ -158,17 +139,16 @@ class Parser:
 
         if len(self.listaTokens) == 1 and self.tokenAtual == '$':
             #SUCESSO
-            print('SUCESSO')
+            sys.exit('Sucesso')
         else:
             #ERRO
             sys.exit("Simbolo " + self.tokenAtual + " no lugar incorreto")
 
     def padrao(self):
-        print('LEXEMA: ',self.pilha, ' - nao encontrado')
+        print('pilha temporario: ', self.pilha)
         sys.exit('símbolo esperado: '+ self.pilha[-1])
 
     def programa(self):
-        print('entra em programa')
         if(self.tokenAtual == 'se' or  
         self.tokenAtual == 'funcao' or 
         self.tokenAtual == 'enquanto' or
@@ -180,14 +160,13 @@ class Parser:
             self.deriva(['INSTRUCOESINICIO'])
         elif(self.tokenAtual == '$'):
             #SUCESSO
-            print('Sucesso')
+            sys.exit('Sucesso')
 
         else:
             #ERRO
             sys.exit('ERRO PROGRAMA: simbolo não permitido')
         
     def instrucoesInicio(self):  
-        print('Entra em INSTRUCOESINICIO') 
         if(self.tokenAtual == 'se' or  
         self.tokenAtual == 'funcao' or 
         self.tokenAtual == 'enquanto' or
@@ -200,10 +179,10 @@ class Parser:
             self.deriva(['INSTRUCOES2', 'INSTRUCAO'])
         elif(self.tokenAtual == '$'):
             #INSTRUCOESINICIO --> ε
+            print('INSTRUCOESINICIO --> ε')
             self.pilha.pop()
 
     def bloco(self):
-        print('entra em bloco')
         if self.tokenAtual == 'novalinha':
             #BLOCO --> NOVALINHA indent INSTRUCOES dedent
             self.deriva(['dedent', 'INSTRUCOES', 'indent', 'NOVALINHA'])
@@ -220,6 +199,7 @@ class Parser:
             sys.exit('ERRO NOVALINHA caracter diferente de novalinha')
 
     def novaLinha2(self):
+        print('dentro de novalinha2 token atua: ', self.tokenAtual)
         if self.tokenAtual == 'novalinha':
             #NOVALINHA2 --> novaLinha NOVALINHA2
             self.deriva(['NOVALINHA2', 'novalinha'])
@@ -235,6 +215,7 @@ class Parser:
         self.tokenAtual == 'retorna'):
             self.pilha.pop()
             #NOVALINHA2 --> ε
+            print('NOVALINHA2 --> ε')
         else: 
             #ERRO
             sys.exit('ERRO NOVALINHA2 carcter diferente de novalinha')
@@ -260,13 +241,13 @@ class Parser:
         self.tokenAtual == 'id' or  
         self.tokenAtual == 'retorna'):
             #DEDENT --> ε
+            print('DEDENT --> ε')
             self.pilha.pop()
         else:
             #ERRO
             sys.exit('ERRO DEDENT carcter nao reconhecido')
 
     def instrucoes(self):
-        print('entra em instruções')
         if(self.tokenAtual == 'se' or  
         self.tokenAtual == 'funcao' or 
         self.tokenAtual == 'enquanto' or
@@ -283,22 +264,21 @@ class Parser:
             sys.exit('ERRO INSTRUCOES: símbolo não permitido')
 
     def instrucoes2(self):
-        print('entra em instruções2')
+        print('token atual temporario: ', self.tokenAtual)
         if(self.tokenAtual == 'novalinha'):
             #INSTRUCOES2 --> NOVALINHA3 INSTRUCAO INSTRUCOES2
             self.deriva(['INSTRUCOES2', 'INSTRUCAO', 'NOVALINHA3'])
         elif(self.tokenAtual == '$' or
         self.tokenAtual == 'dedent'):  
             #INSTRUCOES2 --> ε
+            print('INSTRUCOES2 --> ε')
             self.pilha.pop()
         else:
             #ERRO
             sys.exit('ERRO INSTRUCOES2: simbolo nao reconhecido')
 
     def instrucao(self):
-        print('entra em instrução')
         if self.tokenAtual == 'se':
-            print('entra no se')
             # INSTRUÇÃO --> CONDICIONAL
             self.deriva(['CONDICIONAL'])
         elif self.tokenAtual == 'funcao':
@@ -342,6 +322,7 @@ class Parser:
         self.tokenAtual == 'novalinha' or
         self.tokenAtual == 'dedent'):
             #SENAOSE --> ε
+            print('SENAOSE --> ε')
             self.pilha.pop()
         else:
             #ERRO
@@ -355,13 +336,11 @@ class Parser:
         self.tokenAtual == 'novalinha' or
         self.tokenAtual == 'dedent'):
             #SENAO --> ε 
-            print('entra aqui no senao')
-            print('pilha no senao: ', self.pilha)
+            print('SENAO --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO SENAO: símbolo não permitido')
-            self.pilha.clear()
+            sys.exit('ERRO SENAO: simbolo nao reconhecido')
 
     def leitura(self):
         if(self.tokenAtual == 'ler'):
@@ -369,8 +348,7 @@ class Parser:
             self.deriva([')','NOVOTERMOLEITURA', 'TERMOLEITURA', '(', 'ler'])
         else:
             #ERRO
-            print('ERRO LEITURA: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO LEITURA: simbolo nao reconhecido')
 
     def termoLeitura(self):
         if(self.tokenAtual == 'id'):
@@ -378,20 +356,19 @@ class Parser:
             self.deriva(['DIMENSAO', 'id'])
         else:
             #ERRO
-            print('ERRO TERMOLEITURA: simbolo nao reconhecido')
-            self.pilha.clear()
-    
+            sys.exit('ERRO TERMOLEITURA: simbolo nao reconhecido')
+ 
     def novoTermoLeitura(self):
         if(self.tokenAtual == ','):
             #NOVOTERMOLEITURA --> , TERMOLEITURA NOVOTERMOLEITURA
             self.deriva(['NOVOTERMOLEITURA', 'TERMOLEITURA', ','])
         elif(self.tokenAtual == ')'):
             #NOVOTERMOLEITURA --> ε
+            print('NOVOTERMOLEITURA --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO NOVOTERMOLEITURA: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO NOVOTERMOLEITURA: simbolo nao reconhecido')
 
     def dimensao(self):
         if(self.tokenAtual == '['):
@@ -399,11 +376,11 @@ class Parser:
             self.deriva(['DIMENSAO', ']', 'EXPR_ADITIVA', '['])
         elif(self.tokenAtual == ')' or self.tokenAtual == ','):
             #DIMENSAO --> ε
+            print('DIMENSAO --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO DIMENSAO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO DIMENSAO: simbolo nao reconhecido')
 
     def escrita(self):
         if(self.tokenAtual == 'escrever'):
@@ -411,8 +388,7 @@ class Parser:
             self.deriva(')','NOVOTERMOESCRITA', 'TERMOESCRITA', '(', 'escrever')
         else:
             #ERRO
-            print('ERRO ESCRITA: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO ESCRITA: simbolo nao reconhecido')
 
     def termoEscrita(self):
         if(self.tokenAtual == 'id'):
@@ -426,8 +402,7 @@ class Parser:
             self.deriva(['texto'])
         else:
             #ERRO
-            print('ERRO TERMOESCRITA: simbolo não reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO TERMOESCRITA: simbolo nao reconhecido')
 
     def novoTermoEscrita(self):
         #NOVOTERMOESCRITA --> , TERMOESCRITA NOVOTERMOESCRITA
@@ -435,11 +410,11 @@ class Parser:
             self.deriva(['NOVOTERMOESCRITA', 'TERMOESCRITA' ','])
         elif(self.tokenAtual == ')'):
             #NOVOTERMOESCRITA --> ε
+            print('NOVOTERMOESCRITA --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO NOVOTERMOESCRITA: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO NOVOTERMOESCRITA: simbolo nao reconhecido')
 
     def funcao(self):
         if(self.tokenAtual == 'funcao'):
@@ -447,8 +422,7 @@ class Parser:
             self.deriva(['BLOCO', ':', ')', 'PARAMETRO', '(', 'id', 'funcao'])
         else:
             #ERRO
-            print('ERRO FUNCAO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO FUNCAO: simbolo nao reconhecido')
 
     def parametro(self):
         if(self.tokenAtual == 'id'):
@@ -456,11 +430,11 @@ class Parser:
             self.deriva(['PARAMETRO2', 'id'])
         elif(self.tokenAtual == ')'):
             #PARAMETRO --> ε
+            print('PARAMETRO --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO PARAMETRO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO PARAMETRO: simbolo nao reconhecido')
 
     def parametro2(self):
         if(self.tokenAtual == ','):
@@ -468,19 +442,18 @@ class Parser:
             self.deriva(['PARAMETRO2', 'id', ','])
         elif(self.tokenAtual == ')'):
             #PARAMETRO2 --> ε
+            print('PARAMETRO2 --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO PARAMETRO2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO PARAMETRO2: simbolo nao reconhecido')
 
     def atribuicao(self):
         if(self.tokenAtual == 'id'):
             #ATRIBUIÇÃO --> id = COMPLEMENTO 
             self.deriva(['COMPLEMENTO', '=', 'id'])
         else:
-            print('ERRO ATRIBUICAO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO ATRIBUICAO: simbolo nao reconhecido')
 
     def complemento(self):
         if(self.tokenAtual == '+' or 
@@ -498,8 +471,7 @@ class Parser:
             self.deriva(['FUNCAO'])
         else:
             #ERRO
-            print('ERRO COMPLEMENTO: simbolo nao identificado')
-            self.pilha.clear()
+            sys.exit('ERRO COMPLEMENTO: simbolo nao reconhecido')
 
     def enquanto(self):
         if(self.tokenAtual == 'enquanto'):
@@ -507,16 +479,14 @@ class Parser:
             self.deriva(['BLOCO', ':', ')', 'EXPRESSAO', '(', 'enquanto'])
         else:
             #ERRO
-            print('ERRO ENQUANTO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO ENQUANTO: simbolo nao reconhecido')
 
     def classe(self):
         if(self.tokenAtual == 'classe'):
             self.deriva('BLOCO', ':', 'id', 'classe')
         else:
             #ERRO
-            print('ERRO CLASSE: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO CLASSE: simbolo nao reconhecido')
 
     def retorno(self):
         if(self.tokenAtual == 'retorna'):
@@ -524,8 +494,7 @@ class Parser:
             self.deriva(['EXPRESSAO', 'retorna'])
         else:
             #ERRO
-            print('ERRO RETORNO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO RETORNO: simbolo nao reconhecido')
 
     def expressao(self):
         if(self.tokenAtual == '+' or 
@@ -540,8 +509,7 @@ class Parser:
             self.deriva(['EXPR_OU'])
         else:
             #ERRO
-            print('ERRO EXPRESSAO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPRESSAO: simbolo nao reconhecido')
 
     def expr_ou(self):
         if(self.tokenAtual == '+' or 
@@ -556,8 +524,7 @@ class Parser:
             self.deriva(['EXPR_OU2', 'EXPR_E'])
         else:
             #ERRO
-            print('ERRO EXPR_OU: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_OU: simbolo nao reconhecido')
 
     def expr_ou2(self):
         if(self.tokenAtual == 'ou'):
@@ -567,11 +534,11 @@ class Parser:
         self.tokenAtual == 'dedent' or
         self.tokenAtual == ')'):
             #EXPR_OU2 --> ε
+            print('EXPR_OU2 --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO EXPR_OU2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_OU2: simbolo nao reconhecido')
 
     def expr_e(self):
         if(self.tokenAtual == '+' or 
@@ -586,8 +553,7 @@ class Parser:
             self.deriva(['EXPR_E2', 'EXPR_RELACIONAL'])
         else:
             #ERRO
-            print('ERRO EXPR_E: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_E: simbolo nao reconhecido')
 
     def expr_e2(self):
         if(self.tokenAtual == 'e'):
@@ -598,11 +564,11 @@ class Parser:
         self.tokenAtual == ')' or
         self.tokenAtual == 'ou'):
             #EXPR_E2 --> ε
+            print('EXPR_E2 --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO EXPR_E2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_E2: simbolo nao reconhecido')
 
     def expr_relacional(self):
         if(self.tokenAtual == '+' or 
@@ -617,8 +583,7 @@ class Parser:
             self.deriva(['EXPR_RELACIONAL2', 'EXPR_ADITIVA'])
         else:
             #ERRO
-            print('ERRO EXPR_RELACIONAL: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_RELACIONAL: simbolo nao reconhecido')
 
     def expr_relacional2(self):
         if(self.tokenAtual == '<' or 
@@ -635,11 +600,11 @@ class Parser:
         self.tokenAtual == 'e' or
         self.tokenAtual == 'ou'):
             #EXPR_REALACIONAL2 --> ε
+            print('EXPR_REALACIONAL2 --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO RELACIONAL_E2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_RELACIONAL2: simbolo nao reconhecido')
 
     def op_comparativo(self):
         if(self.tokenAtual == '<'):
@@ -662,9 +627,8 @@ class Parser:
             self.deriva(['!='])
         else:
             #ERRO
-            print('ERRO OP_COMPARATIVO: simbolo nao reconhecido') 
-            self.pilha.clear()
-             
+            sys.exit('ERRO OP_COMPARATIVO: simbolo nao reconhecido')
+         
     def expr_aditiva(self):
         if(self.tokenAtual == '+' or 
         self.tokenAtual == '-' or 
@@ -678,8 +642,7 @@ class Parser:
             self.deriva(['EXPR_ADITIVA2', 'EXPR_MULTIPLICATIVA'])
         else:
             #ERRO
-            print('ERRO EXPR_ADITIVA: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_ADITIVA: simbolo nao reconhecido')
 
     def expr_aditiva2(self):
         if(self.tokenAtual == '+' or self.tokenAtual == '-'):
@@ -697,11 +660,11 @@ class Parser:
         self.tokenAtual == '==' or 
         self.tokenAtual == '!='): 
             #EXPR_ADITIVA2 -->  ε
+            print('EXPR_ADITIVA2 -->  ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO EXPR_ADITIVA2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_ADITIVA: simbolo nao reconhecido')
 
     def op_aditivo(self):
         if(self.tokenAtual == '+'):
@@ -712,8 +675,7 @@ class Parser:
             self.deriva(['-'])
         else:
             #ERRO
-            print('ERRO OP_ADITIVO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO OP_ADITIVO: simbolo nao reconhecido')
 
     def expr_multiplicativa(self):
         if(self.tokenAtual == '+' or 
@@ -728,8 +690,7 @@ class Parser:
             self.deriva(['EXPR_MULTIPLICATIVA2', 'FATOR'])
         else:
             #ERRO
-            print('ERRO EXPR_MULTIPLIVATIVA: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_MULTIPLICATIVA: simbolo nao reconhecido')
 
     def expr_multiplicativa2(self):
         if(self.tokenAtual == '*' or self.tokenAtual == '/'):
@@ -748,13 +709,12 @@ class Parser:
         self.tokenAtual == '!=' or
         self.tokenAtual == '+' or
         self.tokenAtual == '-'): 
-            #EXPR_MULTIPLICATIVA2 -->  ε
+            #EXPR_MULTIPLICATIVA2 -->  
+            print('EXPR_MULTIPLICATIVA2 -->  ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO EXPR_MULTIPLICATIVA2: simbolo nao reconhecido')
-            print('token atual: ', self.tokenAtual)
-            self.pilha.clear()
+            sys.exit('ERRO EXPR_MULTIPLICATIVA2: simbolo nao reconhecido')
 
     def op_multiplicativo(self):
         if(self.tokenAtual == '*'):
@@ -765,8 +725,7 @@ class Parser:
             self.deriva(['/'])
         else:
             #ERRO
-            print('ERRO OP_MULTIPLICATIVO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO OP_MULTIPLICATIVO: simbolo nao reconhecido')
 
     def fator(self):
         if(self.tokenAtual == '+' or 
@@ -787,8 +746,7 @@ class Parser:
             self.deriva([')', 'EXPRESSAO', '('])
         else:
             #ERRO
-            print('ERRO FATOR: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO FATOR: simbolo nao reconhecido')
 
     def termo(self):
         if(self.tokenAtual == 'id'):
@@ -800,8 +758,7 @@ class Parser:
             self.deriva(['CONSTANTE'])
         else:
             #ERRO
-            print('ERRO TERMO: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO TERMO: simbolo nao reconhecido')
 
     def dimensao2(self):
         if(self.tokenAtual == '['):
@@ -821,11 +778,11 @@ class Parser:
         self.tokenAtual == '*' or
         self.tokenAtual == '/'): 
             #DIMENSAO2 --> ε
+            print('DIMENSAO2 --> ε')
             self.pilha.pop()
         else:
         #ERRO
-            print('ERRO DIMENSAO2: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO DIMENSAO2: simbolo nao reconhecido')
 
     def sinal(self):
         if(self.tokenAtual == '+'):
@@ -838,11 +795,11 @@ class Parser:
         self.tokenAtual == 'num_inteiro' or
         self.tokenAtual == 'num_real'):
             #SINAL --> ε
+            print('SINAL --> ε')
             self.pilha.pop()
         else:
             #ERRO
-            print('ERRO SINAL: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO SINAL: simbolo nao reconhecido')
 
     def constante(self):
         if(self.tokenAtual == 'num_inteiro'):
@@ -853,8 +810,8 @@ class Parser:
             self.deriva(['num_real'])
         else:
             #ERRO
-            print('ERRO CONSTANTE: simbolo nao reconhecido')
-            self.pilha.clear()
+            sys.exit('ERRO CONSTANTE: simbolo nao reconhecido')
+
 
 print('Digite o código. Para compilar digite Ctrl+Z')
 codigo = sys.stdin.read()

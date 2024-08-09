@@ -170,8 +170,6 @@ class Lexer:
             self.listaTokens.append(('dedent', None))
             self.pilhaTab.pop()
         self.listaTokens.append(('$', None))
-        print('lista tokens: ', self.listaTokens)
-        print('tab simb', self.tabelaSimbolos)
            
 
     #caso de nao haver o estado chamado, só para a fase de testes
@@ -1841,13 +1839,10 @@ class Lexer:
             self.nivelIndetacao += 1
         elif(self.caracterAtual == '\t'):
             self.nivelIndetacao += 4
-            print('aqui')
         else:
             self.estadoAtual = 138
             self.estado_138()
             
-
-
     #IDENTAÇÃO  -  (q0 --> q138 --> q0)
     def estado_138(self):
         print('entra no estado 138')
@@ -1866,7 +1861,6 @@ class Lexer:
     #\n FINAL  -  (q0 --> q139 --> q0)
     def estado_139(self):
         print('entra no estado 139')
-        print('caracter atual: ', 'comida'+self.caracterAtual+'boa')
         if(self.caracterAtual == '\n'):
             pass
         elif(self.caracterAtual == ' ' or self.caracterAtual == '\t'):

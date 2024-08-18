@@ -51,10 +51,6 @@ class Parser:
                 'NOVALINHA' : self.novaLinha,
 
                 'NOVALINHA2' : self.novaLinha2,
-
-                'NOVALINHA3' : self.novaLinha3,
-
-                'DEDENT' : self.dedent,
                 
                 'INSTRUCOESINICIO' : self.instrucoesInicio,
                 
@@ -220,33 +216,6 @@ class Parser:
             #ERRO
             sys.exit('ERRO NOVALINHA2 carcter diferente de novalinha')
 
-    def novaLinha3(self):
-        if self.tokenAtual == 'novalinha':
-            #NOVALINHA3 --> NOVALINHA DEDENT
-            self.deriva(['DEDENT', 'NOVALINHA'])
-        else: 
-            #ERRO
-            sys.exit('ERRO NOVALINHA3 carcter diferente de novalinha')
-
-    def dedent(self):
-        if self.tokenAtual == 'dedent':
-            #DEDENT --> dedent
-            self.deriva(['dedent'])
-        elif (self.tokenAtual == 'se' or  
-        self.tokenAtual == 'funcao' or 
-        self.tokenAtual == 'enquanto' or
-        self.tokenAtual == 'classe' or
-        self.tokenAtual == 'ler' or 
-        self.tokenAtual == 'escrever' or 
-        self.tokenAtual == 'id' or  
-        self.tokenAtual == 'retorna'):
-            #DEDENT --> ε
-            print('DEDENT --> ε')
-            self.pilha.pop()
-        else:
-            #ERRO
-            sys.exit('ERRO DEDENT carcter nao reconhecido')
-
     def instrucoes(self):
         if(self.tokenAtual == 'se' or  
         self.tokenAtual == 'funcao' or 
@@ -267,7 +236,7 @@ class Parser:
         print('token atual temporario: ', self.tokenAtual)
         if(self.tokenAtual == 'novalinha'):
             #INSTRUCOES2 --> NOVALINHA3 INSTRUCAO INSTRUCOES2
-            self.deriva(['INSTRUCOES2', 'INSTRUCAO', 'NOVALINHA3'])
+            self.deriva(['INSTRUCOES2', 'INSTRUCAO', 'NOVALINHA'])
         elif(self.tokenAtual == '$' or
         self.tokenAtual == 'dedent'):  
             #INSTRUCOES2 --> ε
@@ -531,6 +500,7 @@ class Parser:
             #EXPR_OU2 --> ou EXPR_E EXPR_OU2
             self.deriva(['EXPR_OU2', 'EXPR_E', 'ou'])
         elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == '$' or
         self.tokenAtual == 'dedent' or
         self.tokenAtual == ')'):
             #EXPR_OU2 --> ε
@@ -560,6 +530,7 @@ class Parser:
             #EXPR_E2 --> e EXPR_RELACIONAL EXPR_E2
             self.deriva(['EXPR_E2', 'EXPR_RELACIONAL', 'e'])
         elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == '$' or
         self.tokenAtual == 'dedent' or
         self.tokenAtual == ')' or
         self.tokenAtual == 'ou'):
@@ -595,6 +566,7 @@ class Parser:
             #EXPR_RELACIONAL2 --> OP_COMPARATIVO EXPR_ADITIVA
             self.deriva(['EXPR_ADITIVA', 'OP_COMPARATIVO'])
         elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == '$' or
         self.tokenAtual == 'dedent' or
         self.tokenAtual == ')' or
         self.tokenAtual == 'e' or
@@ -649,6 +621,7 @@ class Parser:
             #EXPR_ADITIVA2 --> OP_ADITIVO EXPR_MULTIPLICATIVA EXPR_ADITIVA2
             self.deriva(['EXPR_ADITIVA2', 'EXPR_MULTIPLICATIVA', 'OP_ADITIVO'])
         elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == '$' or
         self.tokenAtual == 'dedent' or
         self.tokenAtual == ')' or
         self.tokenAtual == 'e' or
@@ -698,6 +671,7 @@ class Parser:
             self.deriva(['EXPR_MULTIPLICATIVA2', 'FATOR', 'OP_MULTIPLICATIVO'])
         elif(self.tokenAtual == 'novalinha' or
         self.tokenAtual == 'dedent' or
+        self.tokenAtual == '$' or
         self.tokenAtual == ')' or
         self.tokenAtual == 'e' or
         self.tokenAtual == 'ou' or
@@ -714,6 +688,7 @@ class Parser:
             self.pilha.pop()
         else:
             #ERRO
+            print('self.caracter: ', self.tokenAtual)
             sys.exit('ERRO EXPR_MULTIPLICATIVA2: simbolo nao reconhecido')
 
     def op_multiplicativo(self):
@@ -765,6 +740,7 @@ class Parser:
             #DIMENSAO2 --> [ EXPR_ADITIVA ] DIMENSAO2
             self.deriva(['DIMENSAO2', ']', 'EXPR_ADITIVA', '['])
         elif(self.tokenAtual == 'novalinha' or
+        self.tokenAtual == '$' or
         self.tokenAtual == 'dedent' or
         self.tokenAtual == ')' or
         self.tokenAtual == '<' or 

@@ -1862,6 +1862,9 @@ class Lexer:
                 self.pilhaTab.pop()
             for i in range(self.contadorNovasLinhas):
                 self.listaTokens.append(('novalinha', None))
+        else:
+            for i in range(self.contadorNovasLinhas):
+                self.listaTokens.append(('novalinha', None))
         self.nivelIndetacao = 0
         self.lexema = ''
         self.contadorNovasLinhas = 0

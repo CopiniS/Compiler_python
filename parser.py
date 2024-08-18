@@ -114,6 +114,8 @@ class Parser:
                 
                 'EXPR_ADITIVA2' : self.expr_aditiva2,
                 
+                'OP_ADITIVO' : self.op_aditivo,
+
                 'EXPR_MULTIPLICATIVA' : self.expr_multiplicativa,
                 
                 'EXPR_MULTIPLICATIVA2' : self.expr_multiplicativa2,

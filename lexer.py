@@ -324,7 +324,6 @@ class Lexer:
         # quebra de linha para organizar as linhas
         elif self.caracterAtual == '\n':
             self.estadoAtual = 139
-            self.estado_139()
 
     #FUNCAO | FALSO - (q0 --> q1 --> q2 | q8 | q98 | q99)
     def estado_1(self):
@@ -1837,8 +1836,13 @@ class Lexer:
         print('entra no estado 137')
         if(self.caracterAtual == ' '):
             self.nivelIndetacao += 1
+            self.estadoAtual = 137
         elif(self.caracterAtual == '\t'):
             self.nivelIndetacao += 4
+            self.estadoAtual = 137
+        elif(self.caracterAtual == '\n'):
+            self.nivelIndetacao = 0
+            self.estadoAtual = 139
         else:
             self.estadoAtual = 138
             self.estado_138()
@@ -1856,24 +1860,24 @@ class Lexer:
         self.nivelIndetacao = 0
         self.lexema = ''
         self.estadoAtual = 0
-        self.contador-=1
+        self.estado_0()
 
     #\n FINAL  -  (q0 --> q139 --> q0)
     def estado_139(self):
         print('entra no estado 139')
+        self.listaTokens.append(('novalinha', None))
         if(self.caracterAtual == '\n'):
-            pass
+            self.estadoAtual = 139
         elif(self.caracterAtual == ' ' or self.caracterAtual == '\t'):
-            self.listaTokens.append(('novalinha', None))
             self.estadoAtual = 137
             self.estado_137()
         else:
-            self.listaTokens.append(('novalinha', None))
-            self.estadoAtual = 0
+            self.estadoAtual = 138
+            self.estado_138()
 
 
-# print('Digite o código. Para compilar digite Ctrl+Z')
-# codigo = sys.stdin.read()
-# x = Lexer(codigo) 
-# x.getToken()
-# print(x.listaTokens)
+print('Digite o código. Para compilar digite Ctrl+Z')
+codigo = sys.stdin.read()
+x = Lexer(codigo) 
+x.getToken()
+print(x.listaTokens)
